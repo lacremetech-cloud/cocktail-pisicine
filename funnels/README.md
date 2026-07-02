@@ -45,6 +45,7 @@ window.WA_CONFIG   = { funnel:"B-whatsapp", phone:"33600000000", endpoint:"" };
 
 - `endpoint` : URL POST (webhook **Zapier/Make**, **Google Sheets** via Apps Script, ou CRM). Reçoit un JSON avec toutes les réponses + coordonnées + estimation.
   Laisser **vide** = mode démo (le lead est loggé dans la console, le funnel fonctionne quand même).
+  👉 Pour recevoir les leads **dans un Excel/tableur**, voir [`../tracking/README.md`](../tracking/README.md) (script Google Sheets prêt à l'emploi).
 - `redirectOnSuccess` *(Funnel A, optionnel)* : URL d'une page « merci » externe. Si vide → écran de confirmation intégré.
 
 **Payload envoyé (exemple Funnel A) :**

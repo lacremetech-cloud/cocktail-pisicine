@@ -70,6 +70,23 @@
   h2.title{ font-size:clamp(24px,4vw,38px); line-height:1.15; font-weight:800; color:var(--navy); letter-spacing:-.6px; }
   .sec-head p{ color:var(--gris); font-size:16.5px; margin-top:12px; }
 
+  /* Promise / objections */
+  .promise{ background:#fff; }
+  .pgrid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  @media (max-width:900px){ .pgrid{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:600px){ .pgrid{ grid-template-columns:1fr; } }
+  .pcard{ border:1px solid #e7eef7; border-radius:16px; padding:22px; background:#fff; box-shadow:0 8px 26px rgba(10,61,107,.05); display:flex; flex-direction:column; }
+  .pcard .worry{ display:flex; gap:11px; align-items:flex-start; color:var(--gris); font-size:15px; }
+  .pcard .worry i{ font-style:italic; }
+  .pcard .worry .x{ flex:none; width:26px; height:26px; border-radius:50%; background:#fdecec; color:#e0574d; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:14px; margin-top:1px; }
+  .pcard .line{ height:1px; background:#eef2f6; margin:15px 0; }
+  .pcard .answer{ display:flex; gap:11px; align-items:flex-start; font-size:15px; }
+  .pcard .answer .v{ flex:none; width:26px; height:26px; border-radius:50%; background:var(--cyan-clair); color:var(--bleu-vif); font-weight:800; display:flex; align-items:center; justify-content:center; font-size:14px; margin-top:1px; }
+  .pcard .answer b{ color:var(--navy); }
+  .pcard.cta{ background:linear-gradient(150deg,var(--cyan),var(--bleu-vif)); color:#fff; border:none; align-items:flex-start; justify-content:center; gap:8px; }
+  .pcard.cta h3{ font-size:19px; font-weight:800; letter-spacing:-.3px; }
+  .pcard.cta p{ font-size:14.5px; opacity:.96; margin-bottom:6px; }
+
   /* Benefits */
   .benefits{ background:linear-gradient(180deg,#fff, var(--cyan-clair)); }
   .bgrid{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
@@ -117,6 +134,19 @@
     font-weight:800; font-size:20px; display:flex; align-items:center; justify-content:center; margin-bottom:14px; }
   .step h3{ color:var(--navy); font-size:18px; font-weight:700; }
   .step p{ color:var(--gris); font-size:14.5px; margin-top:6px; }
+
+  /* Value stack */
+  .value{ background:#fff; }
+  .vwrap{ background:linear-gradient(160deg,var(--cyan-clair),#fbfdff); border:1px solid #dce9f7; border-radius:22px; padding:42px 34px; box-shadow:var(--ombre); }
+  .vgrid{ display:grid; grid-template-columns:1fr 1fr; gap:16px 30px; margin:26px 0 22px; }
+  @media (max-width:640px){ .vgrid{ grid-template-columns:1fr; } .vwrap{ padding:32px 22px; } }
+  .vitem{ display:flex; gap:14px; align-items:flex-start; }
+  .vitem .ic{ flex:none; width:46px; height:46px; border-radius:12px; background:#fff; box-shadow:0 5px 16px rgba(10,61,107,.1); display:flex; align-items:center; justify-content:center; font-size:23px; }
+  .vitem b{ color:var(--navy); font-size:15.5px; display:block; }
+  .vitem p{ color:var(--gris); font-size:13.5px; margin-top:2px; }
+  .vbadges{ display:flex; flex-wrap:wrap; gap:10px 20px; justify-content:center; margin-bottom:24px; font-size:13.5px; color:var(--gris); font-weight:600; }
+  .vbadges span{ display:flex; align-items:center; gap:6px; }
+  .cta-row{ text-align:center; }
 
   /* Final CTA */
   .final{ background:linear-gradient(120deg,var(--orange-2),var(--orange)); color:#fff; text-align:center; }
@@ -166,6 +196,49 @@
       <span><span class="stars">★★★★★</span> Équipe notée 5/5</span>
       <span>🇫🇷 Coque française · 40 ans</span>
       <span>🛡️ Double garantie décennale</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROMISE / OBJECTIONS -->
+<section class="promise">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kick">Notre promesse</div>
+      <h2 class="title">Une piscine sans mauvaise surprise</h2>
+      <p>On connaît les hésitations qui vous freinent. À chacune, une réponse concrète — et locale.</p>
+    </div>
+    <div class="pgrid">
+      <div class="pcard">
+        <div class="worry"><span class="x">✕</span><i>« Une piscine, c'est hors de mon budget. »</i></div>
+        <div class="line"></div>
+        <div class="answer"><span class="v">✓</span><span><b>À partir de ~15 000 €</b>, avec financement possible. La coque, c'est le meilleur rapport qualité-prix du marché.</span></div>
+      </div>
+      <div class="pcard">
+        <div class="worry"><span class="x">✕</span><i>« Les travaux vont durer des mois. »</i></div>
+        <div class="line"></div>
+        <div class="answer"><span class="v">✓</span><span><b>Posée en quelques jours</b>, clé en main. Pas de chantier béton interminable qui retourne le jardin.</span></div>
+      </div>
+      <div class="pcard">
+        <div class="worry"><span class="x">✕</span><i>« L'entretien, c'est une corvée. »</i></div>
+        <div class="line"></div>
+        <div class="answer"><span class="v">✓</span><span><b>Surface lisse (gelcoat)</b> : moins d'algues, nettoyage facile et moins de produits qu'un liner ou du béton.</span></div>
+      </div>
+      <div class="pcard">
+        <div class="worry"><span class="x">✕</span><i>« Mon terrain est trop petit ou compliqué. »</i></div>
+        <div class="line"></div>
+        <div class="answer"><span class="v">✓</span><span><b>Étude de faisabilité offerte</b> + 38 modèles, dont des mini-piscines de moins de 10 m².</span></div>
+      </div>
+      <div class="pcard">
+        <div class="worry"><span class="x">✕</span><i>« Je me méfie des pisciniers. »</i></div>
+        <div class="line"></div>
+        <div class="answer"><span class="v">✓</span><span><b>Équipe locale de Jacou</b>, notée 5/5. Fabricant français, double garantie décennale. Des visages, pas un numéro.</span></div>
+      </div>
+      <div class="pcard cta">
+        <h3>Un autre doute&nbsp;?</h3>
+        <p>Posez votre question en 2 min à un conseiller de Jacou. C'est gratuit et sans engagement.</p>
+        <a href="/quiz" class="btn btn-white btn-sm">Poser ma question →</a>
+      </div>
     </div>
   </div>
 </section>
@@ -249,6 +322,26 @@
     </div>
     <div style="text-align:center; margin-top:34px;">
       <a href="/quiz" class="btn btn-orange">Je démarre mon projet →</a>
+    </div>
+  </div>
+</section>
+
+<!-- VALUE STACK -->
+<section class="value">
+  <div class="wrap">
+    <div class="vwrap">
+      <div class="sec-head" style="margin:0 auto 4px;">
+        <div class="kick">En 2 minutes chrono</div>
+        <h2 class="title">Repartez avec bien plus qu'un prix</h2>
+      </div>
+      <div class="vgrid">
+        <div class="vitem"><span class="ic">📊</span><div><b>Votre estimation chiffrée</b><p>Personnalisée selon votre projet, votre terrain et votre budget.</p></div></div>
+        <div class="vitem"><span class="ic">📖</span><div><b>Le catalogue des 50 modèles</b><p>Avec les prix indicatifs, envoyé directement par email.</p></div></div>
+        <div class="vitem"><span class="ic">📅</span><div><b>Un RDV conseil offert</b><p>Avec un expert local de Jacou. Sans engagement.</p></div></div>
+        <div class="vitem"><span class="ic">📐</span><div><b>L'étude de votre terrain</b><p>Faisabilité et accès engin vérifiés gratuitement.</p></div></div>
+      </div>
+      <div class="vbadges"><span>⏱️ 2 minutes</span><span>🔒 Sans engagement</span><span>🎁 100 % gratuit</span></div>
+      <div class="cta-row"><a href="/quiz" class="btn btn-orange">Recevoir tout ça maintenant →</a></div>
     </div>
   </div>
 </section>

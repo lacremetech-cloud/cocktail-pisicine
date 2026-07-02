@@ -451,7 +451,7 @@ window.LEAD_CONFIG = {
     var done = function(){ if (cfg.redirectOnSuccess){ location.href=cfg.redirectOnSuccess; return; } renderConfirmation(); show(7); };
     if (!cfg.endpoint){ console.log('[LEAD_CONFIG.endpoint vide — mode démo] Lead capturé :', payload); done(); return; }
     nextBtn.disabled=true; nextBtn.textContent='Envoi…';
-    fetch(cfg.endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) })
+    fetch(cfg.endpoint, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) })
       .then(function(){ done(); })
       .catch(function(err){ console.error('Envoi lead échoué', err); done(); });
   }
