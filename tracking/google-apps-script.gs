@@ -22,7 +22,8 @@ var STATS_TOKEN = 'occi34';   // clé simple pour lire les stats depuis la page 
 
 var LEAD_HEADERS = [
   'Date','Funnel','Nom','Téléphone','Email','Code postal',
-  'Type piscine','Accès terrain','Délai','Budget','Propriétaire','Page','Brut JSON'
+  'Type piscine','Accès terrain','Délai','Budget','Propriétaire',
+  'RDV date','RDV créneau','Estimation (€)','Fourchette','Page','Brut JSON'
 ];
 var STATS_HEADERS = ['Date','Visites landing','Quiz démarrés','Quiz complétés','Taux (%)'];
 
@@ -43,11 +44,14 @@ function doPost(e) {
 
     // 2) Lead (quiz complété ou WhatsApp)
     var sheet = getLeadSheet_();
+    var fourchette = (data.estimLow && data.estimHigh) ? (data.estimLow + ' – ' + data.estimHigh) : '';
     sheet.appendRow([
       data.submitted_at || new Date().toISOString(),
       data.funnel || '', data.nom || '',
       "'" + (data.tel || ''), data.email || '', "'" + (data.cp || ''),
       data.type || '', data.acces || '', data.delai || '', data.budget || '', data.proprietaire || '',
+      data.rdvDateLabel || data.rdvDate || '', data.rdvTimeLabel || data.rdvTime || '',
+      data.estimCenter || '', fourchette,
       data.page || '', JSON.stringify(data)
     ]);
     // un lead issu du quiz = une conversion
