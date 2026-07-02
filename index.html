@@ -56,8 +56,12 @@
 
   /* Hero */
   .hero{ position:relative; min-height:min(88vh,760px); display:flex; align-items:flex-end; color:#fff; }
-  .hero .bg{ position:absolute; inset:0; z-index:-2; }
-  .hero .bg img{ width:100%; height:100%; object-fit:cover; }
+  .hero .bg{ position:absolute; inset:0; z-index:-2; background:#0b3d6b; }
+  .hero .bg img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .hero .video-embed{ position:absolute; inset:0; overflow:hidden; opacity:0; transition:opacity .6s ease; }
+  .hero .video-embed.ready{ opacity:1; }
+  .hero .video-embed iframe{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:100vw; height:56.25vw; min-height:100%; min-width:177.78vh; pointer-events:none; border:0; }
   .hero::after{ content:""; position:absolute; inset:0; z-index:-1;
     background:linear-gradient(180deg, rgba(6,30,55,.42) 0%, rgba(6,30,55,.18) 32%, rgba(6,30,55,.82) 100%); }
   .hero-in{ padding:40px 0 44px; width:100%; }
@@ -194,7 +198,10 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="bg"><img src="/assets/hero-piscine.jpg" alt="Piscine coque polyester dans un jardin méditerranéen" fetchpriority="high" /></div>
+  <div class="bg">
+    <img src="/assets/hero-piscine.jpg" alt="Piscine coque polyester dans un jardin méditerranéen" fetchpriority="high" />
+    <div class="video-embed" id="heroVideo"><div id="ytplayer"></div></div>
+  </div>
   <div class="wrap hero-in">
     <span class="eyebrow">💧 Piscines coque · Hérault &amp; Gard</span>
     <h1>Offrez à votre famille l'été dont elle rêve.</h1>
@@ -385,6 +392,29 @@
 </footer>
 
 <div class="mcta"><a href="/quiz" class="btn btn-orange">Recevoir mon devis gratuit →</a></div>
+
+<!-- Vidéo hero : spot TV officiel en fond, révélé UNIQUEMENT s'il joue (sinon la photo reste). -->
+<script>
+(function(){
+  var VID = 'buTeJmkCNDg';
+  var tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
+  window.onYouTubeIframeAPIReady = function(){
+    new YT.Player('ytplayer', {
+      videoId: VID,
+      playerVars: { autoplay:1, mute:1, controls:0, loop:1, playlist:VID, playsinline:1, rel:0, modestbranding:1, showinfo:0, iv_load_policy:3, disablekb:1, fs:0 },
+      events: {
+        onReady: function(e){ try { e.target.mute(); e.target.playVideo(); } catch(_){} },
+        onStateChange: function(e){
+          // 1 = PLAYING → on révèle la vidéo (la photo reste le fallback tant que ça ne joue pas)
+          if (e.data === 1){ var v = document.getElementById('heroVideo'); if (v) v.classList.add('ready'); }
+        }
+      }
+    });
+  };
+})();
+</script>
 
 </body>
 </html>
