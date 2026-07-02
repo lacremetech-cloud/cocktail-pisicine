@@ -56,12 +56,8 @@
 
   /* Hero */
   .hero{ position:relative; min-height:min(88vh,760px); display:flex; align-items:flex-end; color:#fff; }
-  .hero .bg{ position:absolute; inset:0; z-index:-2; background:#0b3d6b; }
-  .hero .bg img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-  .hero .video-embed{ position:absolute; inset:0; overflow:hidden; opacity:0; transition:opacity .6s ease; }
-  .hero .video-embed.ready{ opacity:1; }
-  .hero .video-embed iframe{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-    width:100vw; height:56.25vw; min-height:100%; min-width:177.78vh; pointer-events:none; border:0; }
+  .hero .bg{ position:absolute; inset:0; z-index:-2; }
+  .hero .bg img{ width:100%; height:100%; object-fit:cover; }
   .hero::after{ content:""; position:absolute; inset:0; z-index:-1;
     background:linear-gradient(180deg, rgba(6,30,55,.42) 0%, rgba(6,30,55,.18) 32%, rgba(6,30,55,.82) 100%); }
   .hero-in{ padding:40px 0 44px; width:100%; }
@@ -74,6 +70,18 @@
   .hero-trust{ display:flex; flex-wrap:wrap; gap:10px 22px; margin-top:26px; font-size:14px; font-weight:500; }
   .hero-trust span{ display:flex; align-items:center; gap:8px; text-shadow:0 1px 10px rgba(0,0,0,.5); }
   .stars{ color:#ffcf3f; letter-spacing:1px; }
+
+  /* Hero — version mobile : tout centré, plus d'air */
+  @media (max-width:680px){
+    .hero{ align-items:center; text-align:center; min-height:min(92vh,720px); }
+    .hero-in{ padding:26px 4px 40px; }
+    .hero .eyebrow{ margin-left:auto; margin-right:auto; }
+    .hero h1{ max-width:100%; margin:0 auto; font-size:clamp(28px,8.5vw,40px); }
+    .hero p.sub{ margin-left:auto; margin-right:auto; max-width:34ch; }
+    .hero-cta{ justify-content:center; }
+    .hero-cta .btn{ width:100%; }
+    .hero-trust{ justify-content:center; gap:8px 18px; }
+  }
 
   /* Section shells */
   section{ padding:64px 0; }
@@ -198,10 +206,7 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="bg">
-    <img src="/assets/hero-piscine.jpg" alt="Piscine coque polyester dans un jardin méditerranéen" fetchpriority="high" />
-    <div class="video-embed" id="heroVideo"><div id="ytplayer"></div></div>
-  </div>
+  <div class="bg"><img src="/assets/hero-piscine.jpg" alt="Piscine coque polyester dans un jardin méditerranéen" fetchpriority="high" /></div>
   <div class="wrap hero-in">
     <span class="eyebrow">💧 Piscines coque · Hérault &amp; Gard</span>
     <h1>Offrez à votre famille l'été dont elle rêve.</h1>
@@ -393,38 +398,15 @@
 
 <div class="mcta"><a href="/quiz" class="btn btn-orange">Recevoir mon devis gratuit →</a></div>
 
-<!-- Vidéo hero : spot TV officiel en fond, en BOUCLE sur les ~6,5 premières secondes.
-     Toujours en lecture (jamais en pause) → aucun bouton play/pause ; révélé uniquement s'il joue. -->
+<!-- Comptage de visite (stats /stats) — fire-and-forget vers Google Sheets -->
 <script>
 (function(){
-  var VID = 'buTeJmkCNDg';
-  var CAP = 6.5;   // on ne montre que les 6,5 premières secondes, puis on reboucle
-  var timer = null;
-  var tag = document.createElement('script');
-  tag.src = 'https://www.youtube.com/iframe_api';
-  document.head.appendChild(tag);
-  window.onYouTubeIframeAPIReady = function(){
-    new YT.Player('ytplayer', {
-      videoId: VID,
-      playerVars: { autoplay:1, mute:1, controls:0, playsinline:1, rel:0, modestbranding:1, showinfo:0, iv_load_policy:3, disablekb:1, fs:0 },
-      events: {
-        onReady: function(e){ try { e.target.mute(); e.target.seekTo(0); e.target.playVideo(); } catch(_){} },
-        onStateChange: function(e){
-          var player = e.target;
-          if (e.data === 1){ // PLAYING → révèle la vidéo + surveille le point de boucle
-            var v = document.getElementById('heroVideo'); if (v) v.classList.add('ready');
-            if (timer) clearInterval(timer);
-            timer = setInterval(function(){
-              try { if (player.getCurrentTime() >= CAP){ player.seekTo(0); } } catch(_){}
-            }, 150);
-          }
-          if (e.data === 0){ // ENDED (filet) → on relance depuis le début
-            try { player.seekTo(0); player.playVideo(); } catch(_){}
-          }
-        }
-      }
-    });
-  };
+  var EP = "https://script.google.com/macros/s/AKfycbx4v7XriLfDXLgQm00APZQt6z-aSxNhepPDoNtNAsDXEMKj3YvGQJPq2P-KFELTJvsqdQ/exec";
+  var body = JSON.stringify({ type:'view', funnel:'landing', page:location.pathname, ref:document.referrer });
+  try {
+    if (navigator.sendBeacon){ navigator.sendBeacon(EP, new Blob([body], {type:'text/plain;charset=utf-8'})); }
+    else { fetch(EP, { method:'POST', mode:'no-cors', keepalive:true, headers:{'Content-Type':'text/plain;charset=utf-8'}, body:body }); }
+  } catch(e){}
 })();
 </script>
 

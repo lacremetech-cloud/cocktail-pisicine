@@ -17,6 +17,21 @@ que vous ouvrez/téléchargez en **Excel (.xlsx)** quand vous voulez.
 2. Collez l'URL `/exec` obtenue dans les 2 funnels (`endpoint`).
 3. `git push` → testez : la ligne apparaît dans l'onglet **Leads**.
 
+## 📊 Statistiques (visiteurs + taux de conversion) — onglet "Stats" + page /stats
+
+Le script compte aussi, par jour : **visites landing**, **quiz démarrés**, **quiz complétés**,
+et calcule le **taux de conversion** — visibles :
+- directement dans l'onglet **Stats** de votre Google Sheet, et
+- sur la page **`/stats`** du site (3 gros chiffres + détail 14 jours).
+
+**Mise à jour depuis la v1 :** recollez [`google-apps-script.gs`](google-apps-script.gs) (nouvelle version),
+puis `Déployer ▸ Gérer les déploiements ▸ (crayon) ▸ Version : Nouvelle version ▸ Déployer`.
+⚠️ Gardez le **même** déploiement → l'URL `/exec` ne change pas.
+
+- La page `/stats` lit les chiffres via l'URL `/exec` (paramètre `token`, réglé sur `occi34` — modifiable
+  dans le script `STATS_TOKEN` **et** dans `stats.html`).
+- Le comptage des visites se fait via un mini-ping déjà intégré à la landing et au quiz.
+
 **Passer en Excel :** dans le Sheet, `Fichier ▸ Télécharger ▸ Microsoft Excel (.xlsx)`,
 ou connectez le Sheet à Excel/OneDrive (`Données ▸ À partir du web`).
 

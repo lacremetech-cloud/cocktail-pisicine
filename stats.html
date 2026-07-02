@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Statistiques — Cocktail Piscine (Jacou)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --navy:#0a3d6b; --bleu:#178bff; --bleu-vif:#0368ff; --cyan:#02bfff; --cyan-clair:#e9f2ff; --orange:#ff7235; --gris:#5f7078; --texte:#202020; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:'Poppins',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; color:var(--texte);
+    background:linear-gradient(160deg,#eaf4ff,#f4f9ff); min-height:100vh; -webkit-font-smoothing:antialiased; }
+  .wrap{ max-width:900px; margin:0 auto; padding:32px 20px 60px; }
+  header{ display:flex; align-items:center; gap:14px; margin-bottom:8px; flex-wrap:wrap; }
+  header img{ height:30px; }
+  header h1{ font-size:20px; color:var(--navy); font-weight:800; letter-spacing:-.3px; }
+  header .sp{ flex:1; }
+  .btn{ border:none; background:var(--navy); color:#fff; font:inherit; font-weight:700; font-size:14px; padding:10px 16px; border-radius:11px; cursor:pointer; }
+  .btn:active{ transform:scale(.98); }
+  .subtitle{ color:var(--gris); font-size:14px; margin-bottom:26px; }
+
+  .tiles{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:16px; }
+  @media (max-width:680px){ .tiles{ grid-template-columns:1fr; } }
+  .tile{ background:#fff; border:1px solid #e3ecf7; border-radius:18px; padding:24px; box-shadow:0 10px 30px rgba(10,61,107,.07); }
+  .tile .lbl{ font-size:13px; color:var(--gris); font-weight:600; display:flex; align-items:center; gap:8px; }
+  .tile .num{ font-size:clamp(34px,7vw,48px); font-weight:800; letter-spacing:-1.5px; color:var(--navy); line-height:1.1; margin-top:8px; }
+  .tile.accent{ background:linear-gradient(150deg,var(--cyan),var(--bleu-vif)); border:none; }
+  .tile.accent .lbl, .tile.accent .num{ color:#fff; }
+  .tile .sub{ font-size:12.5px; color:var(--gris); margin-top:4px; }
+  .tile.accent .sub{ color:#dbeeff; }
+
+  .mini{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:26px; }
+  @media (max-width:680px){ .mini{ grid-template-columns:1fr 1fr; } }
+  .mini .tile .num{ font-size:28px; }
+
+  .card{ background:#fff; border:1px solid #e3ecf7; border-radius:18px; padding:22px; box-shadow:0 10px 30px rgba(10,61,107,.07); }
+  .card h2{ font-size:15px; color:var(--navy); margin-bottom:14px; }
+  table{ width:100%; border-collapse:collapse; font-size:14px; }
+  th,td{ text-align:right; padding:9px 10px; border-bottom:1px solid #eef3f8; }
+  th:first-child, td:first-child{ text-align:left; }
+  th{ color:var(--gris); font-weight:600; font-size:12.5px; }
+  td.rate{ font-weight:700; color:var(--bleu-vif); }
+  .state{ text-align:center; color:var(--gris); padding:34px 10px; font-size:14px; }
+  .err{ color:#c9282d; }
+  footer{ text-align:center; font-size:12px; color:#93a5ad; margin-top:26px; }
+  code{ background:#eef4f6; padding:2px 6px; border-radius:6px; font-size:12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="/assets/logo-cocktail.svg" alt="Cocktail Piscine" />
+    <h1>· Statistiques</h1>
+    <div class="sp"></div>
+    <button class="btn" id="refresh">↻ Actualiser</button>
+  </header>
+  <p class="subtitle">Performance de la landing et du quiz. Données issues de votre Google Sheet.</p>
+
+  <div id="content"><div class="state">Chargement des statistiques…</div></div>
+
+  <footer>Page privée (non indexée) · Cocktail Piscine — Jacou (34)</footer>
+</div>
+
+<script>
+(function(){
+  var ENDPOINT = "https://script.google.com/macros/s/AKfycbx4v7XriLfDXLgQm00APZQt6z-aSxNhepPDoNtNAsDXEMKj3YvGQJPq2P-KFELTJvsqdQ/exec";
+  var TOKEN = "occi34";  // même valeur que STATS_TOKEN dans le script Apps Script
+  var content = document.getElementById('content');
+
+  window.cpStats = function(d){
+    if (!d || d.ok === false){
+      content.innerHTML = '<div class="state err">Impossible de charger les stats (token ou déploiement). '
+        + 'Vérifiez que le script Apps Script est à jour et redéployé.</div>';
+      return;
+    }
+    var days = (d.jours||[]).slice().reverse();
+    var rows = days.map(function(j){
+      return '<tr><td>'+fmtDate(j.date)+'</td><td>'+j.visites+'</td><td>'+j.demarres+'</td><td>'+j.completes+'</td><td class="rate">'+j.taux+' %</td></tr>';
+    }).join('');
+    content.innerHTML =
+      '<div class="tiles">'
+      + tile('👀 Visiteurs (landing)', d.visites, 'Personnes arrivées sur la page')
+      + tile('✅ Quiz complétés', d.quizCompletes, 'Leads reçus')
+      + tileAccent('📈 Taux de conversion', d.tauxConversion + ' %', 'Quiz complétés ÷ visiteurs')
+      + '</div>'
+      + '<div class="mini">'
+      + tile('📝 Quiz démarrés', d.quizDemarres, 'Ont ouvert le quiz')
+      + tile('🎯 Quiz démarré → complété', d.tauxQuiz + ' %', 'Efficacité du quiz lui-même')
+      + '</div>'
+      + '<div class="card"><h2>Détail des 14 derniers jours</h2>'
+      + (days.length
+          ? '<table><thead><tr><th>Jour</th><th>Visites</th><th>Quiz démarrés</th><th>Complétés</th><th>Taux</th></tr></thead><tbody>'+rows+'</tbody></table>'
+          : '<div class="state">Aucune donnée pour le moment. Les chiffres apparaîtront dès les premières visites.</div>')
+      + '</div>';
+  };
+
+  function tile(lbl, num, sub){ return '<div class="tile"><div class="lbl">'+lbl+'</div><div class="num">'+num+'</div><div class="sub">'+sub+'</div></div>'; }
+  function tileAccent(lbl, num, sub){ return '<div class="tile accent"><div class="lbl">'+lbl+'</div><div class="num">'+num+'</div><div class="sub">'+sub+'</div></div>'; }
+  function fmtDate(s){ var p=String(s).split('-'); return p.length===3 ? (p[2]+'/'+p[1]) : s; }
+
+  function load(){
+    content.innerHTML = '<div class="state">Chargement des statistiques…</div>';
+    var s = document.createElement('script');
+    s.src = ENDPOINT + '?stats=1&token=' + encodeURIComponent(TOKEN) + '&callback=cpStats&_=' + (new Date().getTime());
+    s.onerror = function(){ content.innerHTML = '<div class="state err">Connexion au script impossible. Vérifiez l\'URL /exec et le déploiement.</div>'; };
+    document.body.appendChild(s);
+    setTimeout(function(){ document.body.removeChild(s); }, 8000);
+  }
+  document.getElementById('refresh').addEventListener('click', load);
+  load();
+})();
+</script>
+</body>
+</html>

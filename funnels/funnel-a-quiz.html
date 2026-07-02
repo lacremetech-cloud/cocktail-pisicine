@@ -389,6 +389,14 @@ window.LEAD_CONFIG = {
   document.getElementById('quiz').addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); nextBtn.click(); } });
 
   track('start', {});
+  // comptage "quiz démarré" (stats)
+  try {
+    if (window.LEAD_CONFIG.endpoint){
+      var _sb = JSON.stringify({ type:'view', funnel:'A-quiz', page:location.pathname });
+      if (navigator.sendBeacon){ navigator.sendBeacon(window.LEAD_CONFIG.endpoint, new Blob([_sb],{type:'text/plain;charset=utf-8'})); }
+      else { fetch(window.LEAD_CONFIG.endpoint, {method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain;charset=utf-8'},body:_sb}); }
+    }
+  } catch(e){}
   show(0);
 })();
 </script>
