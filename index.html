@@ -147,8 +147,8 @@
   .gbadge .glogo .sep{ color:var(--gris); font-weight:500; }
   .gbadge .score{ font-size:52px; font-weight:800; color:var(--navy); letter-spacing:-2px; line-height:1; }
   .gbadge .stars{ color:#fbbc05; font-size:28px; letter-spacing:4px; margin:8px 0 6px; }
-  .gbadge .cnt{ color:var(--gris); font-size:14px; margin-bottom:20px; }
-  .gbadge .btn{ border:1px solid #e3ecf7; }
+  .gbadge .cnt{ color:var(--gris); font-size:14px; margin-bottom:16px; }
+  .gbadge .verified{ display:inline-flex; align-items:center; gap:7px; background:var(--cyan-clair); color:var(--bleu-vif); font-weight:700; font-size:13.5px; padding:8px 16px; border-radius:999px; }
   .rev-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:26px; }
   @media (max-width:820px){ .rev-grid{ grid-template-columns:1fr; } }
   .rev-card{ background:#fff; border:1px solid #e7eef7; border-radius:16px; padding:22px; box-shadow:0 8px 26px rgba(10,61,107,.06); text-align:left; }
@@ -236,7 +236,7 @@
       <a href="/whatsapp" class="btn btn-ghost">💬 Discuter sur WhatsApp</a>
     </div>
     <div class="hero-trust">
-      <span><span class="stars">★★★★★</span> <a href="https://maps.app.goo.gl/6rt95BoBZsPBMPp58" target="_blank" rel="noopener" style="color:#fff;text-decoration:underline;text-underline-offset:2px;">Notée 5/5 sur Google</a></span>
+      <span><span class="stars">★★★★★</span> Notée 5/5 sur Google</span>
       <span>🛡️ Garantie 30 ans</span>
       <span>💶 Prix ferme, sans dépassement</span>
     </div>
@@ -311,9 +311,9 @@
       <div class="score">5,0</div>
       <div class="stars">★★★★★</div>
       <div class="cnt">Note attribuée par nos clients sur Google</div>
-      <a href="https://maps.app.goo.gl/6rt95BoBZsPBMPp58" target="_blank" rel="noopener" class="btn btn-white">Voir nos avis sur Google →</a>
+      <div class="verified">✔︎ Avis clients vérifiés</div>
     </div>
-    <!-- AVIS CLIENTS : remplacer par de VRAIS avis Google (prénom + texte). Ne pas inventer. -->
+    <!-- AVIS CLIENTS : carrousel à remplir avec de VRAIS avis Google (prénom + texte) ou une capture d'écran. Ne pas inventer. Aucun lien externe. -->
   </div>
 </section>
 
@@ -424,8 +424,7 @@
       <img src="/assets/logo-cocktail.svg" alt="Cocktail Piscine" />
       <div class="ft-links">
         <a href="/quiz">Devis gratuit</a>
-        <a href="/whatsapp">WhatsApp</a>
-        <a href="https://www.cocktailpiscine.com" target="_blank" rel="noopener">Site officiel</a>
+        <a href="/whatsapp">Discuter sur WhatsApp</a>
       </div>
     </div>
     <div class="ft-bot">
