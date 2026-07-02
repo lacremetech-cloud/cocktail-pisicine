@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Votre projet piscine en 2 min + RDV conseil offert — Cocktail Piscine (Jacou 34)</title>
-<meta name="description" content="Répondez à quelques questions, obtenez votre estimation et réservez votre rendez-vous conseil offert avec l'équipe locale de Jacou. Coque française, double garantie décennale. Catalogue offert." />
+<meta name="description" content="Répondez à quelques questions et l'équipe locale de Jacou vous recontacte rapidement avec votre formule personnalisée. Coque française, garantie 30 ans, prix ferme. Catalogue offert." />
 
 <!-- ============================================================
      FUNNEL A — Quiz-estimateur → PRISE DE RDV (booking)
@@ -221,11 +221,11 @@
         <div class="field-err" id="err-cp">Merci d'indiquer un code postal à 5 chiffres.</div>
       </section>
 
-      <!-- STEP 6 — Coordonnées -->
+      <!-- STEP 6 — Coordonnées (dernière étape) -->
       <section class="step" data-step="5" data-name="Vos coordonnées">
-        <div class="kicker">Presque terminé</div>
-        <h1 class="q">À quel nom réserver le rendez-vous ?</h1>
-        <p class="sub">Un conseiller local vous confirme le créneau et prépare votre estimation.</p>
+        <div class="kicker">Dernière étape</div>
+        <h1 class="q">Où vous envoyer votre formule personnalisée ?</h1>
+        <p class="sub">L'équipe Cocktail Piscine de Jacou étudie votre projet et vous recontacte rapidement avec votre formule sur-mesure.</p>
         <label class="f" for="nom">Prénom & nom</label>
         <input class="f" id="nom" name="nom" autocomplete="name" placeholder="Ex. Camille Durand" />
         <div class="field-err" id="err-nom">Merci d'indiquer votre nom.</div>
@@ -241,40 +241,19 @@
             <div class="field-err" id="err-email">Email invalide.</div>
           </div>
         </div>
-        <div class="reassure" style="margin-top:16px"><span>🇫🇷 Coque française</span><span>🛡️ Double garantie décennale</span><span>⭐ Avis 5/5</span></div>
+        <div class="reassure" style="margin-top:16px"><span>🛡️ Garantie 30 ans</span><span>💶 Prix ferme</span><span>⭐ Équipe locale 5/5</span></div>
       </section>
 
-      <!-- STEP 7 — Prise de RDV (booking) -->
-      <section class="step" data-step="6" data-name="Votre rendez-vous">
-        <div class="kicker">Rendez-vous conseil — offert</div>
-        <h1 class="q">Choisissez votre créneau</h1>
-        <p class="sub">15 min par téléphone avec un conseiller de Jacou : on valide la faisabilité et on affine votre estimation. Sans engagement.</p>
-        <div class="slots-days" id="days"></div>
-        <div class="field-err" id="err-day" style="margin:0 0 6px">Choisissez un jour.</div>
-        <div class="slots-times" id="times">
-          <button type="button" class="tslot" data-value="matin">Matin<small>9 h – 12 h</small></button>
-          <button type="button" class="tslot" data-value="midi">Midi<small>12 h – 14 h</small></button>
-          <button type="button" class="tslot" data-value="aprem">Après-midi<small>14 h – 18 h</small></button>
-        </div>
-        <div class="field-err" id="err-time">Choisissez un créneau.</div>
-        <div class="bonus"><span class="g">🎁</span><div><b>Bonus offert</b><span>Le catalogue des 50 modèles + prix indicatifs, envoyé juste après votre RDV.</span></div></div>
-      </section>
-
-      <!-- STEP 8 — Confirmation -->
-      <section class="step" data-step="7" data-name="C'est réservé" data-final="1">
+      <!-- STEP 7 — Confirmation -->
+      <section class="step" data-step="6" data-name="C'est envoyé" data-final="1">
         <div class="thanks">
           <div class="check">✓</div>
-          <h1>Votre rendez-vous est pré-réservé !</h1>
+          <h1>Merci, c'est bien reçu !</h1>
         </div>
-        <div class="rdvcard"><span class="cal">📅</span><div><b id="rdvWhen">—</b><span>Un conseiller de Jacou vous appelle pour confirmer.</span></div></div>
-        <div class="estim">
-          <span class="pill">Estimation indicative</span>
-          <div class="price" id="estimPrice">— <small>€ HT</small></div>
-          <p class="note" id="estimRange"></p>
-        </div>
+        <div class="rdvcard"><span class="cal">📩</span><div><b>Votre demande est transmise à l'équipe de Jacou</b><span>Notre équipe Cocktail Piscine étudie votre projet et vous recontacte rapidement pour vous faire parvenir votre formule personnalisée.</span></div></div>
         <div class="bonus"><span class="g">🎁</span><div><b>Votre catalogue arrive</b><span>Les 50 modèles + prix indicatifs vous sont envoyés par email.</span></div></div>
-        <p class="sub" style="text-align:center;margin-top:16px">Merci de votre confiance — à très vite avec l'équipe <b>Cocktail Piscine (Jacou)</b> !</p>
-        <div class="reassure"><span>🇫🇷 Fabrication française · 40 ans</span><span>🛡️ Double garantie décennale</span><span>⭐ Équipe locale 5/5</span></div>
+        <p class="sub" style="text-align:center;margin-top:16px">À très vite avec l'équipe <b>Cocktail Piscine (Jacou)</b> !</p>
+        <div class="reassure"><span>🇫🇷 Fabrication française · 40 ans</span><span>🛡️ Garantie 30 ans</span><span>⭐ Équipe locale 5/5</span></div>
       </section>
 
       <div class="nav" id="nav">
@@ -307,33 +286,12 @@ window.LEAD_CONFIG = {
   var nextBtn  = document.getElementById('next');
   var nav      = document.getElementById('nav');
   var legal    = document.getElementById('legal');
-  var TOTAL    = 7;   // 7 étapes ; index 7 = confirmation
+  var TOTAL    = 6;   // 6 étapes ; index 6 = confirmation
   var cur      = 0;
   var data     = {};
 
   function track(event, params){ try { if (window.fbq) fbq('track', event, params||{}); } catch(e){}
     try { (window.dataLayer=window.dataLayer||[]).push(Object.assign({event:'quiz_'+event}, params||{})); } catch(e){} }
-
-  /* ---- Build booking days (next 5 open days, skip Sunday) ---- */
-  var DOW = ['dim','lun','mar','mer','jeu','ven','sam'];
-  var MON = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
-  (function buildDays(){
-    var container = document.getElementById('days');
-    var d = new Date(); d.setDate(d.getDate()+1); // à partir de demain
-    var added = 0;
-    while (added < 5) {
-      if (d.getDay() !== 0) { // pas le dimanche
-        var btn = document.createElement('button');
-        btn.type='button'; btn.className='day';
-        btn.setAttribute('data-value', d.toISOString().slice(0,10));
-        btn.setAttribute('data-label', DOW[d.getDay()]+' '+d.getDate()+' '+MON[d.getMonth()]);
-        btn.innerHTML = '<span class="dow">'+DOW[d.getDay()]+'</span><span class="dnum">'+d.getDate()+'</span><span class="mon">'+MON[d.getMonth()]+'</span>';
-        container.appendChild(btn);
-        added++;
-      }
-      d.setDate(d.getDate()+1);
-    }
-  })();
 
   function show(i){
     steps.forEach(function(s,idx){ s.classList.toggle('active', idx===i); });
@@ -347,7 +305,7 @@ window.LEAD_CONFIG = {
     } else {
       stepCount.textContent = (i+1) + ' / ' + TOTAL;
       backBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
-      nextBtn.textContent = (i === (TOTAL-1)) ? 'Confirmer mon rendez-vous' : 'Continuer';
+      nextBtn.textContent = (i === (TOTAL-1)) ? 'Recevoir ma formule personnalisée' : 'Continuer';
     }
     track('step_view', { step: i+1 });
     try { active.querySelector('input')?.focus({preventScroll:true}); } catch(e){}
@@ -368,21 +326,6 @@ window.LEAD_CONFIG = {
         setTimeout(function(){ if (validateStep(cur)) show(cur+1); }, 180);
       }
     });
-  });
-
-  /* ---- Booking pickers ---- */
-  document.getElementById('days').addEventListener('click', function(e){
-    var b=e.target.closest('.day'); if(!b) return;
-    this.querySelectorAll('.day').forEach(function(d){ d.classList.remove('sel'); });
-    b.classList.add('sel'); data.rdvDate=b.getAttribute('data-value'); data.rdvDateLabel=b.getAttribute('data-label');
-    document.getElementById('err-day').style.display='none';
-  });
-  document.getElementById('times').addEventListener('click', function(e){
-    var b=e.target.closest('.tslot'); if(!b) return;
-    this.querySelectorAll('.tslot').forEach(function(t){ t.classList.remove('sel'); });
-    var TL={matin:'Matin (9 h – 12 h)',midi:'Midi (12 h – 14 h)',aprem:'Après-midi (14 h – 18 h)'};
-    b.classList.add('sel'); data.rdvTime=b.getAttribute('data-value'); data.rdvTimeLabel=TL[data.rdvTime]||b.getAttribute('data-value');
-    document.getElementById('err-time').style.display='none';
   });
 
   /* ---- Validation ---- */
@@ -411,31 +354,7 @@ window.LEAD_CONFIG = {
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ markErr('email',true); ok2=false; } else markErr('email',false);
       data.nom=nom; data.tel=tel; data.email=email; return ok2;
     }
-    if (s==='6'){
-      var ok3=true;
-      if(!data.rdvDate){ document.getElementById('err-day').style.display='block'; ok3=false; }
-      if(!data.rdvTime){ document.getElementById('err-time').style.display='block'; ok3=false; }
-      return ok3;
-    }
     return true;
-  }
-
-  /* ---- Estimation ---- */
-  function computeEstimate(){
-    var base = data.basePrice || 17000;
-    var adj = { 'lt15':-2000, '15-20':0, '20-30':4000, '30plus':9000 }[data.budget] || 0;
-    var center = base + adj;
-    data.estimLow = Math.round((center*0.92)/500)*500;
-    data.estimHigh= Math.round((center*1.12)/500)*500;
-    data.estimCenter = center;
-  }
-  function fmt(n){ return n.toLocaleString('fr-FR'); }
-
-  function renderConfirmation(){
-    computeEstimate();
-    document.getElementById('rdvWhen').textContent = (data.rdvDateLabel||'') + ' · ' + (data.rdvTimeLabel||'');
-    document.getElementById('estimPrice').innerHTML = fmt(data.estimCenter) + ' <small>€ HT</small>';
-    document.getElementById('estimRange').textContent = 'Fourchette indicative : ' + fmt(data.estimLow) + ' € – ' + fmt(data.estimHigh) + ' € HT (hors options & terrassement spécifique).';
   }
 
   /* ---- Submit ---- */
@@ -443,17 +362,22 @@ window.LEAD_CONFIG = {
     var payload = Object.assign({
       funnel: window.LEAD_CONFIG.funnel, page: location.href, submitted_at: new Date().toISOString()
     }, data);
-    computeEstimate();
-    track('Schedule', { content_name:'RDV piscine', value: data.estimCenter||17000, currency:'EUR' });
-    track('Lead', { content_name:'Quiz estimation piscine', value: data.estimCenter||17000, currency:'EUR' });
+    track('Lead', { content_name:'Quiz projet piscine' });
 
     var cfg = window.LEAD_CONFIG;
-    var done = function(){ if (cfg.redirectOnSuccess){ location.href=cfg.redirectOnSuccess; return; } renderConfirmation(); show(7); };
+    var done_called = false;
+    var done = function(){ if (done_called) return; done_called = true;
+      if (cfg.redirectOnSuccess){ location.href=cfg.redirectOnSuccess; return; } show(6); };
     if (!cfg.endpoint){ console.log('[LEAD_CONFIG.endpoint vide — mode démo] Lead capturé :', payload); done(); return; }
     nextBtn.disabled=true; nextBtn.textContent='Envoi…';
-    fetch(cfg.endpoint, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) })
-      .then(function(){ done(); })
-      .catch(function(err){ console.error('Envoi lead échoué', err); done(); });
+    // Envoi "fire-and-forget" : no-cors + keepalive → la ligne est écrite même si la réponse n'est pas lisible (Apps Script ne renvoie pas de header CORS).
+    try {
+      fetch(cfg.endpoint, { method:'POST', mode:'no-cors', keepalive:true, headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) })
+        .then(function(){ done(); })
+        .catch(function(err){ console.error('Envoi lead', err); done(); });
+    } catch(err){ console.error('Envoi lead', err); done(); }
+    // filet de sécurité : on affiche la confirmation même si le réseau traîne
+    setTimeout(done, 1500);
   }
 
   nextBtn.addEventListener('click', function(){
