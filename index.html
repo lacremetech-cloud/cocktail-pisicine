@@ -59,12 +59,13 @@
   .hero .bg{ position:absolute; inset:0; z-index:-2; }
   .hero .bg img{ width:100%; height:100%; object-fit:cover; }
   .hero::after{ content:""; position:absolute; inset:0; z-index:-1;
-    background:linear-gradient(180deg, rgba(6,30,55,.30) 0%, rgba(6,30,55,.10) 35%, rgba(6,30,55,.72) 100%); }
+    background:linear-gradient(180deg, rgba(6,30,55,.42) 0%, rgba(6,30,55,.18) 32%, rgba(6,30,55,.82) 100%); }
   .hero-in{ padding:40px 0 44px; width:100%; }
   .eyebrow{ display:inline-flex; align-items:center; gap:8px; background:rgba(2,191,255,.9); color:#04263a;
     font-weight:700; font-size:12.5px; letter-spacing:.4px; text-transform:uppercase; padding:7px 14px; border-radius:999px; margin-bottom:16px; }
   .hero h1{ font-size:clamp(30px,6vw,58px); line-height:1.05; font-weight:900; letter-spacing:-1px; max-width:16ch; text-shadow:0 2px 30px rgba(0,0,0,.35); }
-  .hero p.sub{ font-size:clamp(16px,2.4vw,20px); max-width:44ch; margin:16px 0 26px; color:#eaf4ff; text-shadow:0 1px 14px rgba(0,0,0,.4); }
+  .hero p.sub{ font-size:clamp(17px,2.6vw,22px); max-width:46ch; margin:18px 0 28px; color:#fff; font-weight:500; line-height:1.5; text-shadow:0 2px 18px rgba(0,0,0,.55); }
+  .hero p.sub strong{ color:#fff; font-weight:800; border-bottom:2px solid var(--cyan); padding-bottom:1px; }
   .hero-cta{ display:flex; flex-wrap:wrap; gap:14px; }
   .hero-trust{ display:flex; flex-wrap:wrap; gap:10px 22px; margin-top:26px; font-size:14px; font-weight:500; }
   .hero-trust span{ display:flex; align-items:center; gap:8px; text-shadow:0 1px 10px rgba(0,0,0,.5); }
@@ -197,7 +198,7 @@
   <div class="wrap hero-in">
     <span class="eyebrow">💧 Piscines coque · Hérault &amp; Gard</span>
     <h1>Offrez à votre famille l'été dont elle rêve.</h1>
-    <p class="sub">Votre piscine coque, posée clé en main en quelques jours. Garantie 30 ans, prix ferme, et une équipe locale de Jacou notée 5/5.</p>
+    <p class="sub">Votre piscine coque, posée clé en main <strong>en quelques jours</strong>. <strong>Garantie 30 ans</strong>, <strong>prix ferme</strong>, et une équipe locale de Jacou <strong>notée 5/5</strong>.</p>
     <div class="hero-cta">
       <a href="/quiz" class="btn btn-orange">Recevoir mon devis personnalisé →</a>
       <a href="/whatsapp" class="btn btn-ghost">💬 Discuter sur WhatsApp</a>
