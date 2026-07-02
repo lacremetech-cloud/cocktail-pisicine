@@ -111,18 +111,25 @@ function getStatsSheet_() {
   return sheet;
 }
 
+// Normalise une date (cellule Date OU texte) en 'yyyy-MM-dd'
+function normDate_(v, tz) {
+  return (v instanceof Date) ? Utilities.formatDate(v, tz, 'yyyy-MM-dd') : String(v);
+}
+
 // col : 1=Visites landing, 2=Quiz démarrés, 3=Quiz complétés (décalage +2 dans la feuille)
 function bumpStat_(col) {
   var sheet = getStatsSheet_();
-  var today = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd');
+  var tz = Session.getScriptTimeZone();
+  var today = Utilities.formatDate(new Date(), tz, 'yyyy-MM-dd');
   var values = sheet.getDataRange().getValues();
   var rowIndex = -1;
   for (var i = 1; i < values.length; i++) {
-    if (String(values[i][0]) === today) { rowIndex = i + 1; break; }
+    if (normDate_(values[i][0], tz) === today) { rowIndex = i + 1; break; }  // ← compare des dates normalisées
   }
   if (rowIndex === -1) {
     sheet.appendRow([today, 0, 0, 0, 0]);
     rowIndex = sheet.getLastRow();
+    sheet.getRange(rowIndex, 1).setNumberFormat('@').setValue(today); // garde la date en TEXTE → comparaisons fiables
   }
   var cell = sheet.getRange(rowIndex, col + 1); // +1 : la colonne 1 = Date
   cell.setValue((Number(cell.getValue()) || 0) + 1);
@@ -134,16 +141,21 @@ function bumpStat_(col) {
 
 function getStats_() {
   var sheet = getStatsSheet_();
+  var tz = Session.getScriptTimeZone();
   var values = sheet.getDataRange().getValues();
   var totalV = 0, totalStart = 0, totalC = 0;
-  var days = [];
+  var map = {}, order = [];
   for (var i = 1; i < values.length; i++) {
-    var d = String(values[i][0]);
+    var d = normDate_(values[i][0], tz);
+    if (!d) continue;
     var v = Number(values[i][1]) || 0, s = Number(values[i][2]) || 0, c = Number(values[i][3]) || 0;
     totalV += v; totalStart += s; totalC += c;
-    days.push({ date: d, visites: v, demarres: s, completes: c, taux: v ? Math.round((c / v) * 1000) / 10 : 0 });
+    if (!map[d]) { map[d] = { date: d, visites: 0, demarres: 0, completes: 0 }; order.push(d); }
+    map[d].visites += v; map[d].demarres += s; map[d].completes += c;   // ← agrège par jour (robuste aux doublons)
   }
-  days = days.slice(-14); // 14 derniers jours
+  var days = order.map(function(d) {
+    var o = map[d]; o.taux = o.visites ? Math.round((o.completes / o.visites) * 1000) / 10 : 0; return o;
+  }).slice(-14);
   return {
     ok: true,
     visites: totalV,
