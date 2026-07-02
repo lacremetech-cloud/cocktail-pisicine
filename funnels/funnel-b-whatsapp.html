@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Parlez de votre projet piscine sur WhatsApp — Cocktail Piscine (Jacou 34)</title>
+<meta name="description" content="Discutez en direct avec un conseiller local de Jacou sur WhatsApp. Coque française, double garantie décennale, devis gratuit. Réponse rapide, sans engagement." />
+
+<!-- ============================================================
+     FUNNEL B — Conversationnel WhatsApp (CPL bas, setting intégré)
+     Le prospect répond à 2-3 micro-questions puis bascule sur WhatsApp
+     avec un message pré-rempli & pré-qualifié → le setting démarre chaud.
+     Client : Occi Piscines / Cocktail Piscine 34 (Jacou)
+     Intégration : voir funnels/README.md
+       - Numéro WhatsApp →  window.WA_CONFIG.phone  (format international, sans +)
+       - Endpoint form   →  window.WA_CONFIG.endpoint (optionnel : logge le lead aussi)
+       - Meta Pixel      →  bloc META PIXEL en bas
+     ============================================================ -->
+
+<style>
+  :root {
+    --wa: #25D366; --wa-d: #128C7E; --wa-ink:#075E54;
+    --bleu-profond:#0b4f6c; --aqua:#12a6c9; --aqua-clair:#e6f6fb;
+    --texte:#14242c; --gris:#5f7078; --or:#e0a615;
+    --bg:#e9f3ef; --bubble-in:#ffffff; --bubble-out:#d9fdd3;
+    --radius:16px; --maxw:560px;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--texte); line-height:1.5; -webkit-font-smoothing:antialiased;
+    background:
+      radial-gradient(1200px 500px at 50% -10%, #d6efe6 0%, transparent 60%),
+      linear-gradient(170deg,#eaf7fb 0%, #eef3ef 100%);
+    min-height:100vh;
+  }
+  .wrap { max-width:var(--maxw); margin:0 auto; padding:18px 16px 40px; }
+
+  /* Trust bar */
+  .trust { display:flex; align-items:center; gap:10px; justify-content:center; flex-wrap:wrap; font-size:12px; color:var(--gris); margin-bottom:14px; }
+  .trust span{ display:flex; align-items:center; gap:5px; } .trust b{ color:var(--bleu-profond); }
+
+  /* Hero above chat */
+  .hero { text-align:center; margin-bottom:14px; }
+  .hero h1 { font-size:clamp(22px,5.4vw,30px); line-height:1.2; letter-spacing:-.5px; color:var(--bleu-profond); }
+  .hero p { color:var(--gris); font-size:15px; margin-top:8px; }
+
+  /* Phone/chat frame */
+  .chat { background:var(--bg); border-radius:22px; overflow:hidden; box-shadow:0 16px 50px rgba(11,79,108,.18); border:1px solid #d8e6e0; }
+  .chat-head { background:var(--wa-ink); color:#fff; display:flex; align-items:center; gap:12px; padding:12px 14px; }
+  .avatar { width:42px;height:42px;border-radius:50%; background:#0d7d70; display:flex;align-items:center;justify-content:center; font-size:20px; flex:none; overflow:hidden; }
+  .chat-head .who b { display:block; font-size:15px; }
+  .chat-head .who span { font-size:12px; color:#bfe9e2; display:flex; align-items:center; gap:6px; }
+  .dot { width:8px;height:8px;border-radius:50%; background:#5efc82; display:inline-block; box-shadow:0 0 0 0 rgba(94,252,130,.6); animation:pulse 2s infinite; }
+  @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(94,252,130,.5);} 70%{box-shadow:0 0 0 7px rgba(94,252,130,0);} 100%{box-shadow:0 0 0 0 rgba(94,252,130,0);} }
+  .chat-head .wa-ic { margin-left:auto; font-size:22px; }
+
+  .msgs { padding:16px 12px 8px; min-height:240px;
+    background-image: linear-gradient(rgba(233,243,239,.6),rgba(233,243,239,.6)); }
+  .row { display:flex; margin-bottom:10px; }
+  .row.out { justify-content:flex-end; }
+  .bubble { max-width:82%; padding:9px 12px; border-radius:12px; font-size:14.5px; box-shadow:0 1px 1px rgba(0,0,0,.06); position:relative; }
+  .row.in  .bubble { background:var(--bubble-in); border-top-left-radius:2px; }
+  .row.out .bubble { background:var(--bubble-out); border-top-right-radius:2px; }
+  .bubble .t { font-size:10.5px; color:#8aa; text-align:right; margin-top:3px; }
+  .typing { display:inline-flex; gap:4px; padding:4px 2px; }
+  .typing i { width:7px;height:7px;border-radius:50%; background:#9bb; display:inline-block; animation:blink 1.2s infinite; }
+  .typing i:nth-child(2){ animation-delay:.2s; } .typing i:nth-child(3){ animation-delay:.4s; }
+  @keyframes blink { 0%,60%,100%{opacity:.3;} 30%{opacity:1;} }
+
+  /* Quick replies */
+  .replies { padding:6px 12px 14px; display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end; }
+  .qr { border:1.5px solid var(--wa-d); color:var(--wa-ink); background:#fff; border-radius:999px; padding:9px 15px; font:inherit; font-weight:600; font-size:14px; cursor:pointer; transition:.15s; }
+  .qr:hover { background:var(--wa-d); color:#fff; }
+  .qr:active { transform:scale(.97); }
+
+  /* Mini form (name + tel) shown before final handoff */
+  .miniform { padding:4px 14px 16px; display:none; }
+  .miniform.show { display:block; animation:fade .3s ease; }
+  @keyframes fade { from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+  .miniform label { display:block; font-weight:600; font-size:13px; margin:8px 0 5px; color:var(--texte); }
+  .miniform input { width:100%; padding:12px 13px; font:inherit; border:2px solid #cfe0da; border-radius:11px; background:#fff; }
+  .miniform input:focus { outline:none; border-color:var(--wa-d); box-shadow:0 0 0 3px rgba(18,140,126,.15); }
+  .miniform .ferr { color:#c9282d; font-size:12px; margin-top:4px; display:none; }
+
+  /* WhatsApp CTA */
+  .wa-cta { display:none; padding:2px 12px 16px; }
+  .wa-cta.show { display:block; }
+  .wa-btn {
+    display:flex; align-items:center; justify-content:center; gap:10px; width:100%;
+    background:var(--wa); color:#fff; font:inherit; font-weight:800; font-size:17px;
+    padding:16px; border:none; border-radius:14px; cursor:pointer; text-decoration:none;
+    box-shadow:0 8px 22px rgba(37,211,102,.4); transition:transform .05s, filter .15s;
+  }
+  .wa-btn:hover { filter:brightness(1.05); } .wa-btn:active { transform:scale(.99); }
+  .wa-sub { text-align:center; font-size:12.5px; color:var(--gris); margin-top:9px; }
+
+  .foot-re { display:flex; flex-wrap:wrap; gap:10px 16px; justify-content:center; margin-top:18px; font-size:12.5px; color:var(--gris); }
+  .foot-re span{ display:flex; align-items:center; gap:6px; }
+  .legal { font-size:11.5px; color:#8ea0a8; text-align:center; margin-top:14px; line-height:1.45; }
+  footer.mini { text-align:center; font-size:12px; color:#93a5ad; padding-top:20px; }
+
+  /* Sticky mobile WA shortcut */
+  .sticky { position:fixed; left:0; right:0; bottom:0; padding:10px 14px calc(10px + env(safe-area-inset-bottom)); background:linear-gradient(180deg,transparent, #eef3ef 40%); display:none; }
+  .sticky.show { display:block; }
+  @media (min-width:600px){ .sticky{ display:none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="trust">
+    <span>🇫🇷 Coque <b>française</b> · 40 ans</span>
+    <span>🛡️ Double garantie <b>décennale</b></span>
+    <span>⭐ <b>5/5</b> · Jacou (34)</span>
+  </div>
+
+  <div class="hero">
+    <h1>Votre projet piscine, expliqué en 2 messages</h1>
+    <p>Discutez directement avec un conseiller local sur WhatsApp. Réponse rapide, devis gratuit, zéro engagement.</p>
+  </div>
+
+  <div class="chat">
+    <div class="chat-head">
+      <div class="avatar">🏊</div>
+      <div class="who">
+        <b>Cocktail Piscine · Jacou</b>
+        <span><i class="dot"></i> en ligne — répond en quelques minutes</span>
+      </div>
+      <div class="wa-ic">🟢</div>
+    </div>
+
+    <div class="msgs" id="msgs"></div>
+    <div class="replies" id="replies"></div>
+
+    <div class="miniform" id="miniform">
+      <label for="wnom">Votre prénom</label>
+      <input id="wnom" autocomplete="given-name" placeholder="Ex. Camille" />
+      <div class="ferr" id="werr-nom">Merci d'indiquer votre prénom.</div>
+      <label for="wtel">Votre téléphone (pour vous recontacter si WhatsApp coupe)</label>
+      <input id="wtel" inputmode="tel" autocomplete="tel" placeholder="06 12 34 56 78" />
+      <div class="ferr" id="werr-tel">Numéro invalide.</div>
+    </div>
+
+    <div class="wa-cta" id="wacta">
+      <a href="#" class="wa-btn" id="waBtn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.6.2-.2.3-.7.9-.8 1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.2-.6-1.5-.9-2-.2-.5-.4-.4-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.4z"/><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8L7 20.5A10 10 0 1 0 12 2zm0 18.2c-1.5 0-2.9-.4-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>
+        Continuer sur WhatsApp
+      </a>
+      <p class="wa-sub" id="waSub">On reprend là où vous vous êtes arrêté — sans tout réécrire.</p>
+    </div>
+  </div>
+
+  <div class="foot-re">
+    <span>🏭 7 usines françaises</span><span>🎁 Catalogue 50 modèles offert</span><span>📍 Hérault & Gard</span>
+  </div>
+  <p class="legal">🔒 En cliquant, vous ouvrez une conversation WhatsApp avec Cocktail Piscine (Jacou). Vos données ne servent qu'à traiter votre demande.</p>
+  <footer class="mini">Cocktail Piscine · Occi Piscines — Jacou (34) · Coque polyester française</footer>
+</div>
+
+<div class="sticky" id="sticky">
+  <a href="#" class="wa-btn" id="waBtnSticky" style="max-width:560px;margin:0 auto;">💬 Continuer sur WhatsApp</a>
+</div>
+
+<script>
+/* =========================================================================
+   WA CONFIG — à personnaliser à l'intégration (voir funnels/README.md)
+   ========================================================================= */
+window.WA_CONFIG = {
+  funnel: "B-whatsapp",
+  phone: "33600000000",   // ⚠️ REMPLACER par le numéro WhatsApp de l'agence, format international SANS "+".
+  endpoint: "",           // optionnel : webhook/CRM pour logger le lead en +  du passage WhatsApp.
+};
+
+(function(){
+  var msgs    = document.getElementById('msgs');
+  var replies = document.getElementById('replies');
+  var miniform= document.getElementById('miniform');
+  var wacta   = document.getElementById('wacta');
+  var sticky  = document.getElementById('sticky');
+  var data    = { funnel: window.WA_CONFIG.funnel };
+
+  function track(event, params){ try{ if(window.fbq) fbq('track',event,params||{}); }catch(e){}
+    try{ (window.dataLayer=window.dataLayer||[]).push(Object.assign({event:'wa_'+event},params||{})); }catch(e){} }
+
+  function now(){ var d=new Date(); return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2); }
+  function scroll(){ msgs.scrollTop = msgs.scrollHeight; }
+
+  function bubbleIn(html, cb){
+    // typing indicator then message
+    var typing = document.createElement('div');
+    typing.className='row in';
+    typing.innerHTML='<div class="bubble"><div class="typing"><i></i><i></i><i></i></div></div>';
+    msgs.appendChild(typing); scroll();
+    var delay = Math.min(1100, 350 + html.length*12);
+    setTimeout(function(){
+      typing.remove();
+      var r=document.createElement('div'); r.className='row in';
+      r.innerHTML='<div class="bubble">'+html+'<div class="t">'+now()+'</div></div>';
+      msgs.appendChild(r); scroll();
+      if(cb) setTimeout(cb, 250);
+    }, delay);
+  }
+  function bubbleOut(text){
+    var r=document.createElement('div'); r.className='row out';
+    r.innerHTML='<div class="bubble">'+text+'<div class="t">'+now()+' ✓✓</div></div>';
+    msgs.appendChild(r); scroll();
+  }
+  function setReplies(list){
+    replies.innerHTML='';
+    list.forEach(function(o){
+      var b=document.createElement('button'); b.className='qr'; b.textContent=o.label;
+      b.addEventListener('click', function(){ o.onPick(o); }); replies.appendChild(b);
+    });
+  }
+  function clearReplies(){ replies.innerHTML=''; }
+
+  /* ---------- Conversation script (qualification légère) ---------- */
+  function q1(){
+    bubbleIn("Bonjour 👋 Ici l'équipe <b>Cocktail Piscine de Jacou</b>. Pour bien vous orienter : quel <b>type de piscine</b> imaginez-vous ?", function(){
+      setReplies([
+        {label:'🏊 Fond plat', v:'fond-plat'},
+        {label:'🤿 Fond incliné', v:'fond-incline'},
+        {label:'💧 Mini-piscine', v:'mini'},
+        {label:'🤔 Je ne sais pas', v:'je-sais-pas'},
+      ].map(function(o){ o.onPick=function(){ data.type=o.v; bubbleOut(o.label); clearReplies(); q2(); }; return o; }));
+    });
+  }
+  function q2(){
+    bubbleIn("Super 👍 Et pour <b>quand</b> aimeriez-vous en profiter ?", function(){
+      setReplies([
+        {label:'🔥 Dès que possible', v:'3mois'},
+        {label:'📅 Cette année', v:'cette-annee'},
+        {label:'🔎 Je me renseigne', v:'renseigne'},
+      ].map(function(o){ o.onPick=function(){ data.delai=o.v; bubbleOut(o.label); clearReplies(); q3(); }; return o; }));
+    });
+  }
+  function q3(){
+    bubbleIn("Parfait. Êtes-vous <b>propriétaire</b> de votre maison ? (on intervient dans le 34 et le 30)", function(){
+      setReplies([
+        {label:'🏡 Oui, propriétaire', v:'oui'},
+        {label:'🔑 Non', v:'non'},
+      ].map(function(o){ o.onPick=function(){ data.proprietaire=o.v; bubbleOut(o.label); clearReplies(); q4(); }; return o; }));
+    });
+  }
+  function q4(){
+    bubbleIn("Génial, merci 🙌 Dernière chose et je vous mets en relation avec un conseiller sur WhatsApp — laissez-moi juste votre <b>prénom</b> et un <b>numéro</b> 👇", function(){
+      miniform.classList.add('show');
+      setReplies([{label:'C\'est noté →', onPick:submitAndHandoff}]);
+      try{ document.getElementById('wnom').focus({preventScroll:true}); }catch(e){}
+    });
+  }
+
+  function valid(){
+    var nom=(document.getElementById('wnom').value||'').trim();
+    var tel=(document.getElementById('wtel').value||'').trim();
+    var ok=true;
+    if(nom.length<2){ document.getElementById('werr-nom').style.display='block'; ok=false; } else document.getElementById('werr-nom').style.display='none';
+    if(!/^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/.test(tel)){ document.getElementById('werr-tel').style.display='block'; ok=false; } else document.getElementById('werr-tel').style.display='none';
+    data.nom=nom; data.tel=tel; return ok;
+  }
+
+  /* ---------- Pre-filled WhatsApp handoff ---------- */
+  var LABELS = {
+    type:{'fond-plat':'fond plat','fond-incline':'fond incliné','mini':'mini-piscine','je-sais-pas':'à définir'},
+    delai:{'3mois':'dès que possible','cette-annee':'cette année','renseigne':'se renseigne'},
+    proprietaire:{'oui':'propriétaire','non':'non propriétaire'}
+  };
+  function buildWaMessage(){
+    var l = "Bonjour, je viens du site Cocktail Piscine 🙂%0A%0A"
+      + "Mon projet :%0A"
+      + "• Type : " + (LABELS.type[data.type]||'à définir') + "%0A"
+      + "• Délai : " + (LABELS.delai[data.delai]||'-') + "%0A"
+      + "• Statut : " + (LABELS.proprietaire[data.proprietaire]||'-') + "%0A"
+      + "• Prénom : " + encodeURIComponent(data.nom||'') + "%0A%0A"
+      + "Pouvez-vous me faire une estimation et m'envoyer le catalogue ?";
+    return l;
+  }
+  function waUrl(){ return 'https://wa.me/' + window.WA_CONFIG.phone + '?text=' + buildWaMessage(); }
+
+  function logLead(){
+    if(!window.WA_CONFIG.endpoint) { console.log('[WA_CONFIG.endpoint vide — mode démo] Lead :', data); return; }
+    try {
+      fetch(window.WA_CONFIG.endpoint, { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(Object.assign({page:location.href, submitted_at:new Date().toISOString()}, data)) });
+    } catch(e){ console.error(e); }
+  }
+
+  function submitAndHandoff(){
+    if(!valid()) return;
+    clearReplies();
+    bubbleOut(data.nom + ' · ' + data.tel);
+    logLead();
+    track('Lead', { content_name:'WhatsApp conversationnel', value:17000, currency:'EUR' });
+
+    var url = waUrl();
+    document.getElementById('waBtn').setAttribute('href', url);
+    document.getElementById('waBtnSticky').setAttribute('href', url);
+
+    bubbleIn("Merci "+ (data.nom||'') +" 🙌 Votre conseiller a votre demande. Cliquez ci-dessous pour <b>ouvrir la conversation WhatsApp</b> — tout est déjà pré-rempli 👇", function(){
+      miniform.classList.remove('show');
+      wacta.classList.add('show'); sticky.classList.add('show');
+      scroll();
+    });
+  }
+
+  // Ouvre WhatsApp + track du clic
+  ['waBtn','waBtnSticky'].forEach(function(id){
+    document.getElementById(id).addEventListener('click', function(){
+      track('Contact', { method:'whatsapp' });
+    });
+  });
+  // Entrée dans le mini-form = valider
+  ['wnom','wtel'].forEach(function(id){
+    document.getElementById(id).addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); submitAndHandoff(); } });
+  });
+
+  track('start', {});
+  setTimeout(q1, 400);
+})();
+</script>
+
+<!-- ============================================================
+     META PIXEL — décommentez et remplacez PIXEL_ID à l'intégration.
+     Events câblés : PageView, Lead, Contact (clic WhatsApp).
+     👉 Idéal aussi en campagne "Click to WhatsApp" native Meta.
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','PIXEL_ID'); fbq('track','PageView');
+</script>
+     ============================================================ -->
+</body>
+</html>

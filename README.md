@@ -10,6 +10,7 @@ Growth partnership : génération de leads qualifiés pour **Occi Piscines / Coc
 | Dossier | Contenu |
 |---|---|
 | `docs/` | Stratégie, avatar, angles, funnels, tracking |
+| `funnels/` | Funnel A (quiz → RDV) + Funnel B (conversationnel WhatsApp), prêts à héberger |
 
 ## Point de départ
 
@@ -19,7 +20,7 @@ Growth partnership : génération de leads qualifiés pour **Occi Piscines / Coc
 
 1. ✅ Fondation stratégique
 2. ⬜ Créas ads (statiques, angles A1–A6)
-3. ⬜ Funnels A (quiz-estimateur) + B (catalogue)
+3. ✅ Funnels A (quiz → prise de RDV) + B (conversationnel WhatsApp) — voir [`funnels/`](funnels/)
 4. ⬜ Catalogue PDF (aimant, 38 modèles)
 5. ⬜ Tracking (pixel Meta, CRM/suivi, routage leads)
 6. ⬜ Scripts de setting + relance

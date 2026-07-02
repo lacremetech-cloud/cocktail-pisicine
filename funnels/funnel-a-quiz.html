@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Votre projet piscine en 2 min + RDV conseil offert — Cocktail Piscine (Jacou 34)</title>
+<meta name="description" content="Répondez à quelques questions, obtenez votre estimation et réservez votre rendez-vous conseil offert avec l'équipe locale de Jacou. Coque française, double garantie décennale. Catalogue offert." />
+
+<!-- ============================================================
+     FUNNEL A — Quiz-estimateur → PRISE DE RDV (booking)
+     Qualification + booking fusionnés. Le catalogue = cadeau bonus.
+     Client : Occi Piscines / Cocktail Piscine 34 (Jacou)
+     Intégration : voir funnels/README.md
+       - Endpoint form  →  window.LEAD_CONFIG.endpoint
+       - Meta Pixel     →  bloc META PIXEL en bas (remplacer PIXEL_ID)
+     ============================================================ -->
+
+<style>
+  :root {
+    --bleu-profond: #0b4f6c;
+    --bleu: #0f6f97;
+    --aqua: #12a6c9;
+    --aqua-clair: #e6f6fb;
+    --sable: #f7f4ee;
+    --texte: #14242c;
+    --gris: #5f7078;
+    --vert: #1e9e6a;
+    --or: #e0a615;
+    --ombre: 0 10px 40px rgba(11,79,108,.12);
+    --radius: 16px;
+    --maxw: 640px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--texte);
+    background: linear-gradient(160deg, #eaf7fb 0%, #f7f4ee 100%);
+    min-height: 100vh;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 20px 18px 48px; }
+
+  header.brand { display: flex; align-items: center; gap: 12px; padding: 6px 0 20px; }
+  .logo { display:flex; align-items:center; gap:10px; font-weight: 800; color: var(--bleu-profond); font-size: 18px; letter-spacing:-.3px; }
+  .logo .drop { width: 26px; height: 26px; }
+  .badge-local { margin-left:auto; font-size: 12px; color: var(--gris); display:flex; align-items:center; gap:6px; text-align:right; }
+  .badge-local b { color: var(--vert); }
+
+  .progress { height: 8px; background: #dbe9ee; border-radius: 999px; overflow: hidden; margin-bottom: 6px; }
+  .progress > i { display:block; height:100%; width:0; background: linear-gradient(90deg, var(--aqua), var(--bleu-profond)); border-radius:999px; transition: width .35s ease; }
+  .progress-label { font-size: 12px; color: var(--gris); margin-bottom: 22px; display:flex; justify-content:space-between; }
+
+  .card { background:#fff; border-radius: var(--radius); box-shadow: var(--ombre); padding: 28px 24px 26px; }
+  .step { display:none; animation: fade .35s ease; }
+  .step.active { display:block; }
+  @keyframes fade { from { opacity:0; transform: translateY(8px);} to {opacity:1; transform:none;} }
+
+  .kicker { color: var(--aqua); font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing:.6px; margin-bottom: 8px; }
+  h1.q { font-size: clamp(21px, 5vw, 27px); line-height:1.25; letter-spacing:-.4px; margin-bottom: 6px; color: var(--bleu-profond); }
+  .sub { color: var(--gris); font-size: 15px; margin-bottom: 20px; }
+
+  .options { display: grid; gap: 12px; }
+  .options.cols-2 { grid-template-columns: 1fr 1fr; }
+  .opt {
+    display:flex; align-items:center; gap: 14px; width:100%;
+    border: 2px solid #e3ebef; background:#fff; border-radius: 14px;
+    padding: 16px 16px; cursor:pointer; text-align:left; font: inherit; color: var(--texte);
+    transition: border-color .15s, box-shadow .15s, transform .05s;
+  }
+  .opt:hover { border-color: var(--aqua); }
+  .opt:active { transform: scale(.99); }
+  .opt.sel { border-color: var(--aqua); box-shadow: 0 0 0 3px var(--aqua-clair); }
+  .opt .ic { font-size: 26px; width: 40px; text-align:center; flex:none; }
+  .opt .txt b { display:block; font-weight:700; font-size: 15px; }
+  .opt .txt span { display:block; font-size: 13px; color: var(--gris); margin-top:2px; }
+  .options.cols-2 .opt { flex-direction: column; align-items:flex-start; text-align:left; gap:8px; }
+  .options.cols-2 .opt .ic { font-size: 30px; }
+
+  label.f { display:block; font-weight:600; font-size:14px; margin: 14px 0 6px; }
+  input.f, select.f {
+    width:100%; padding: 14px 14px; font: inherit; border:2px solid #e3ebef; border-radius: 12px; background:#fff;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  input.f:focus, select.f:focus { outline:none; border-color: var(--aqua); box-shadow: 0 0 0 3px var(--aqua-clair); }
+  input.f.err { border-color:#e5484d; }
+  .field-err { color:#c9282d; font-size:12.5px; margin-top:5px; display:none; }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:460px){ .row2, .options.cols-2 { grid-template-columns:1fr; } }
+
+  /* Booking */
+  .slots-days { display:grid; grid-template-columns: repeat(auto-fit, minmax(84px,1fr)); gap:10px; margin-bottom: 8px; }
+  .day { border:2px solid #e3ebef; border-radius:12px; padding:10px 6px; text-align:center; cursor:pointer; background:#fff; transition:.15s; }
+  .day:hover { border-color: var(--aqua); }
+  .day.sel { border-color: var(--aqua); background: var(--aqua-clair); }
+  .day .dow { font-size:12px; color:var(--gris); text-transform:capitalize; }
+  .day .dnum { font-weight:800; font-size:19px; color:var(--bleu-profond); }
+  .day .mon { font-size:11px; color:var(--gris); text-transform:capitalize; }
+  .slots-times { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-top:12px; }
+  @media (max-width:460px){ .slots-times{ grid-template-columns:1fr; } }
+  .tslot { border:2px solid #e3ebef; border-radius:12px; padding:12px 8px; text-align:center; cursor:pointer; background:#fff; font-weight:600; transition:.15s; }
+  .tslot:hover { border-color: var(--aqua); }
+  .tslot.sel { border-color: var(--aqua); background: var(--aqua-clair); color: var(--bleu-profond); }
+  .tslot small { display:block; font-weight:400; font-size:12px; color:var(--gris); }
+
+  .nav { display:flex; align-items:center; gap:12px; margin-top: 24px; }
+  .btn { appearance:none; border:none; font: inherit; font-weight:700; cursor:pointer; padding: 15px 22px; border-radius: 12px; transition: transform .05s, filter .15s, background .15s; }
+  .btn:active { transform: scale(.98); }
+  .btn-primary { background: var(--bleu-profond); color:#fff; flex:1; font-size:16px; }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn-primary:disabled { background:#b9c8cf; cursor:not-allowed; }
+  .btn-ghost { background:transparent; color: var(--gris); padding:15px 8px; }
+  .btn-ghost:hover { color: var(--bleu-profond); }
+
+  .reassure { display:flex; flex-wrap:wrap; gap: 10px 18px; justify-content:center; margin-top: 22px; font-size:12.5px; color: var(--gris); }
+  .reassure span { display:flex; align-items:center; gap:6px; }
+
+  .estim { text-align:center; background: var(--aqua-clair); border-radius:14px; padding:18px 14px; margin: 18px 0 4px; }
+  .estim .price { font-size: clamp(28px, 7vw, 38px); font-weight:800; color: var(--bleu-profond); letter-spacing:-1px; margin:4px 0; }
+  .estim .price small { font-size:15px; font-weight:600; color:var(--gris); }
+  .estim .note { font-size:13px; color:var(--gris); }
+  .pill { display:inline-block; background:#fff; color: var(--bleu-profond); font-weight:700; font-size:13px; padding:6px 12px; border-radius:999px; }
+
+  .bonus { display:flex; align-items:center; gap:12px; border:1.5px dashed var(--or); background:#fffaf0; border-radius:12px; padding:12px 14px; margin-top:14px; }
+  .bonus .g { font-size:26px; } .bonus b { color:#8a6400; display:block; } .bonus span { font-size:13px; color:#8a6d3b; display:block; margin-top:2px; }
+
+  .thanks { text-align:center; padding: 4px 4px 0; }
+  .thanks .check { width:64px;height:64px;border-radius:50%; background:var(--vert); color:#fff; display:flex;align-items:center;justify-content:center; font-size:34px; margin: 0 auto 14px; }
+  .thanks h1 { color: var(--bleu-profond); font-size:24px; margin-bottom:8px; }
+  .rdvcard { border:2px solid var(--aqua); background:#fff; border-radius:14px; padding:14px 16px; margin: 12px 0; display:flex; align-items:center; gap:14px; text-align:left; }
+  .rdvcard .cal { font-size:30px; } .rdvcard b { display:block; color:var(--bleu-profond); font-size:16px; } .rdvcard span { font-size:13px; color:var(--gris); }
+
+  .legal { font-size:11.5px; color:#8ea0a8; text-align:center; margin-top:16px; line-height:1.45; }
+  footer.mini { text-align:center; font-size:12px; color:#93a5ad; padding-top:22px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="brand">
+    <div class="logo">
+      <svg class="drop" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z" fill="#12a6c9"/><path d="M9 15a3 3 0 0 0 3 3" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+      Cocktail Piscine
+    </div>
+    <div class="badge-local">⭐ <b>5/5</b> · Équipe de Jacou (34)</div>
+  </header>
+
+  <div class="progress"><i id="bar"></i></div>
+  <div class="progress-label"><span id="stepName">Votre projet</span><span id="stepCount">1 / 7</span></div>
+
+  <div class="card">
+    <form id="quiz" novalidate>
+
+      <!-- STEP 1 — Type -->
+      <section class="step active" data-step="0" data-name="Votre piscine">
+        <div class="kicker">Projet piscine · 2 min</div>
+        <h1 class="q">Quelle piscine imaginez-vous ?</h1>
+        <p class="sub">Coque polyester française, posée clé en main par votre équipe locale.</p>
+        <div class="options cols-2" data-field="type">
+          <button type="button" class="opt" data-value="fond-plat" data-price="16000"><span class="ic">🏊</span><span class="txt"><b>Fond plat</b><span>Baignade & jeux en famille</span></span></button>
+          <button type="button" class="opt" data-value="fond-incline" data-price="19000"><span class="ic">🤿</span><span class="txt"><b>Fond incliné</b><span>Pour nager & plonger</span></span></button>
+          <button type="button" class="opt" data-value="mini" data-price="12000"><span class="ic">💧</span><span class="txt"><b>Mini-piscine</b><span>Petit terrain / couloir de nage</span></span></button>
+          <button type="button" class="opt" data-value="je-sais-pas" data-price="17000"><span class="ic">🤔</span><span class="txt"><b>Je ne sais pas encore</b><span>Conseillez-moi</span></span></button>
+        </div>
+      </section>
+
+      <!-- STEP 2 — Terrain -->
+      <section class="step" data-step="1" data-name="Votre terrain">
+        <div class="kicker">Faisabilité</div>
+        <h1 class="q">Votre terrain est-il accessible à un engin ?</h1>
+        <p class="sub">La pose d'une coque demande un accès pour une mini-pelle (≈ 2 m de large).</p>
+        <div class="options" data-field="acces">
+          <button type="button" class="opt" data-value="oui-facile"><span class="ic">✅</span><span class="txt"><b>Oui, accès facile</b><span>Portail large, terrain dégagé</span></span></button>
+          <button type="button" class="opt" data-value="oui-serre"><span class="ic">↔️</span><span class="txt"><b>Accès un peu serré</b><span>À vérifier ensemble</span></span></button>
+          <button type="button" class="opt" data-value="je-sais-pas"><span class="ic">❓</span><span class="txt"><b>Je ne sais pas</b><span>L'étude gratuite le dira</span></span></button>
+        </div>
+      </section>
+
+      <!-- STEP 3 — Délai -->
+      <section class="step" data-step="2" data-name="Votre délai">
+        <div class="kicker">Timing</div>
+        <h1 class="q">Pour quand souhaitez-vous en profiter ?</h1>
+        <p class="sub">Poser hors saison = délais courts et bassin prêt pour le printemps.</p>
+        <div class="options" data-field="delai">
+          <button type="button" class="opt" data-value="3mois"><span class="ic">🔥</span><span class="txt"><b>Dès que possible</b><span>Sous 3 mois</span></span></button>
+          <button type="button" class="opt" data-value="cette-annee"><span class="ic">📅</span><span class="txt"><b>Cette année</b><span>Je planifie mon projet</span></span></button>
+          <button type="button" class="opt" data-value="renseigne"><span class="ic">🔎</span><span class="txt"><b>Je me renseigne</b><span>Pas de date précise</span></span></button>
+        </div>
+      </section>
+
+      <!-- STEP 4 — Budget -->
+      <section class="step" data-step="3" data-name="Votre budget">
+        <div class="kicker">Budget</div>
+        <h1 class="q">Quel budget avez-vous en tête ?</h1>
+        <p class="sub">Une vraie coque enterrée démarre autour de 15 000 €. Le financement est possible.</p>
+        <div class="options" data-field="budget">
+          <button type="button" class="opt" data-value="lt15"><span class="ic">💶</span><span class="txt"><b>Moins de 15 000 €</b><span>Mini-piscine / petit bassin</span></span></button>
+          <button type="button" class="opt" data-value="15-20"><span class="ic">💶</span><span class="txt"><b>15 000 – 20 000 €</b><span>Le plus demandé</span></span></button>
+          <button type="button" class="opt" data-value="20-30"><span class="ic">💶</span><span class="txt"><b>20 000 – 30 000 €</b><span>Grand bassin / options</span></span></button>
+          <button type="button" class="opt" data-value="30plus"><span class="ic">💶</span><span class="txt"><b>Plus de 30 000 €</b><span>Projet premium</span></span></button>
+        </div>
+      </section>
+
+      <!-- STEP 5 — Propriétaire + CP -->
+      <section class="step" data-step="4" data-name="Votre logement">
+        <div class="kicker">Zone d'intervention</div>
+        <h1 class="q">Êtes-vous propriétaire ?</h1>
+        <p class="sub">Nous intervenons dans l'Hérault (34) et le Gard (30).</p>
+        <div class="options" data-field="proprietaire" style="margin-bottom:6px;">
+          <button type="button" class="opt" data-value="oui"><span class="ic">🏡</span><span class="txt"><b>Oui, je suis propriétaire</b></span></button>
+          <button type="button" class="opt" data-value="non"><span class="ic">🔑</span><span class="txt"><b>Non (locataire)</b></span></button>
+        </div>
+        <label class="f" for="cp">Votre code postal</label>
+        <input class="f" id="cp" name="cp" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="Ex. 34830" />
+        <div class="field-err" id="err-cp">Merci d'indiquer un code postal à 5 chiffres.</div>
+      </section>
+
+      <!-- STEP 6 — Coordonnées -->
+      <section class="step" data-step="5" data-name="Vos coordonnées">
+        <div class="kicker">Presque terminé</div>
+        <h1 class="q">À quel nom réserver le rendez-vous ?</h1>
+        <p class="sub">Un conseiller local vous confirme le créneau et prépare votre estimation.</p>
+        <label class="f" for="nom">Prénom & nom</label>
+        <input class="f" id="nom" name="nom" autocomplete="name" placeholder="Ex. Camille Durand" />
+        <div class="field-err" id="err-nom">Merci d'indiquer votre nom.</div>
+        <div class="row2">
+          <div>
+            <label class="f" for="tel">Téléphone</label>
+            <input class="f" id="tel" name="tel" inputmode="tel" autocomplete="tel" placeholder="06 12 34 56 78" />
+            <div class="field-err" id="err-tel">Numéro invalide.</div>
+          </div>
+          <div>
+            <label class="f" for="email">Email</label>
+            <input class="f" id="email" name="email" inputmode="email" autocomplete="email" placeholder="vous@email.fr" />
+            <div class="field-err" id="err-email">Email invalide.</div>
+          </div>
+        </div>
+        <div class="reassure" style="margin-top:16px"><span>🇫🇷 Coque française</span><span>🛡️ Double garantie décennale</span><span>⭐ Avis 5/5</span></div>
+      </section>
+
+      <!-- STEP 7 — Prise de RDV (booking) -->
+      <section class="step" data-step="6" data-name="Votre rendez-vous">
+        <div class="kicker">Rendez-vous conseil — offert</div>
+        <h1 class="q">Choisissez votre créneau</h1>
+        <p class="sub">15 min par téléphone avec un conseiller de Jacou : on valide la faisabilité et on affine votre estimation. Sans engagement.</p>
+        <div class="slots-days" id="days"></div>
+        <div class="field-err" id="err-day" style="margin:0 0 6px">Choisissez un jour.</div>
+        <div class="slots-times" id="times">
+          <button type="button" class="tslot" data-value="matin">Matin<small>9 h – 12 h</small></button>
+          <button type="button" class="tslot" data-value="midi">Midi<small>12 h – 14 h</small></button>
+          <button type="button" class="tslot" data-value="aprem">Après-midi<small>14 h – 18 h</small></button>
+        </div>
+        <div class="field-err" id="err-time">Choisissez un créneau.</div>
+        <div class="bonus"><span class="g">🎁</span><div><b>Bonus offert</b><span>Le catalogue des 50 modèles + prix indicatifs, envoyé juste après votre RDV.</span></div></div>
+      </section>
+
+      <!-- STEP 8 — Confirmation -->
+      <section class="step" data-step="7" data-name="C'est réservé" data-final="1">
+        <div class="thanks">
+          <div class="check">✓</div>
+          <h1>Votre rendez-vous est pré-réservé !</h1>
+        </div>
+        <div class="rdvcard"><span class="cal">📅</span><div><b id="rdvWhen">—</b><span>Un conseiller de Jacou vous appelle pour confirmer.</span></div></div>
+        <div class="estim">
+          <span class="pill">Estimation indicative</span>
+          <div class="price" id="estimPrice">— <small>€ HT</small></div>
+          <p class="note" id="estimRange"></p>
+        </div>
+        <div class="bonus"><span class="g">🎁</span><div><b>Votre catalogue arrive</b><span>Les 50 modèles + prix indicatifs vous sont envoyés par email.</span></div></div>
+        <p class="sub" style="text-align:center;margin-top:16px">Merci de votre confiance — à très vite avec l'équipe <b>Cocktail Piscine (Jacou)</b> !</p>
+        <div class="reassure"><span>🇫🇷 Fabrication française · 40 ans</span><span>🛡️ Double garantie décennale</span><span>⭐ Équipe locale 5/5</span></div>
+      </section>
+
+      <div class="nav" id="nav">
+        <button type="button" class="btn-ghost" id="back" style="visibility:hidden">← Retour</button>
+        <button type="button" class="btn btn-primary" id="next">Continuer</button>
+      </div>
+    </form>
+  </div>
+
+  <p class="legal" id="legal">🔒 Vos données restent confidentielles et ne servent qu'à traiter votre demande. En continuant, vous acceptez d'être recontacté par Cocktail Piscine.</p>
+  <footer class="mini">Cocktail Piscine · Occi Piscines — Jacou (34) · Coque polyester française, 40 ans de savoir-faire</footer>
+</div>
+
+<script>
+/* =========================================================================
+   LEAD CONFIG — à personnaliser à l'intégration (voir funnels/README.md)
+   ========================================================================= */
+window.LEAD_CONFIG = {
+  funnel: "A-quiz-rdv",
+  endpoint: "",            // ex: webhook Zapier/Make ou CRM. Vide = mode démo (console).
+  redirectOnSuccess: "",   // ex: "/merci" (optionnel — sinon écran de confirmation intégré).
+};
+
+(function () {
+  var steps    = Array.prototype.slice.call(document.querySelectorAll('.step'));
+  var bar      = document.getElementById('bar');
+  var stepName = document.getElementById('stepName');
+  var stepCount= document.getElementById('stepCount');
+  var backBtn  = document.getElementById('back');
+  var nextBtn  = document.getElementById('next');
+  var nav      = document.getElementById('nav');
+  var legal    = document.getElementById('legal');
+  var TOTAL    = 7;   // 7 étapes ; index 7 = confirmation
+  var cur      = 0;
+  var data     = {};
+
+  function track(event, params){ try { if (window.fbq) fbq('track', event, params||{}); } catch(e){}
+    try { (window.dataLayer=window.dataLayer||[]).push(Object.assign({event:'quiz_'+event}, params||{})); } catch(e){} }
+
+  /* ---- Build booking days (next 5 open days, skip Sunday) ---- */
+  var DOW = ['dim','lun','mar','mer','jeu','ven','sam'];
+  var MON = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+  (function buildDays(){
+    var container = document.getElementById('days');
+    var d = new Date(); d.setDate(d.getDate()+1); // à partir de demain
+    var added = 0;
+    while (added < 5) {
+      if (d.getDay() !== 0) { // pas le dimanche
+        var btn = document.createElement('button');
+        btn.type='button'; btn.className='day';
+        btn.setAttribute('data-value', d.toISOString().slice(0,10));
+        btn.setAttribute('data-label', DOW[d.getDay()]+' '+d.getDate()+' '+MON[d.getMonth()]);
+        btn.innerHTML = '<span class="dow">'+DOW[d.getDay()]+'</span><span class="dnum">'+d.getDate()+'</span><span class="mon">'+MON[d.getMonth()]+'</span>';
+        container.appendChild(btn);
+        added++;
+      }
+      d.setDate(d.getDate()+1);
+    }
+  })();
+
+  function show(i){
+    steps.forEach(function(s,idx){ s.classList.toggle('active', idx===i); });
+    cur = i;
+    var active = steps[i];
+    var isFinal = active.getAttribute('data-final') === '1';
+    bar.style.width = (isFinal ? 100 : Math.round((i/TOTAL)*100)) + '%';
+    stepName.textContent = active.getAttribute('data-name');
+    if (isFinal) {
+      stepCount.textContent = 'Terminé'; nav.style.display='none'; legal.style.display='none';
+    } else {
+      stepCount.textContent = (i+1) + ' / ' + TOTAL;
+      backBtn.style.visibility = i === 0 ? 'hidden' : 'visible';
+      nextBtn.textContent = (i === (TOTAL-1)) ? 'Confirmer mon rendez-vous' : 'Continuer';
+    }
+    track('step_view', { step: i+1 });
+    try { active.querySelector('input')?.focus({preventScroll:true}); } catch(e){}
+    window.scrollTo({ top:0, behavior:'smooth' });
+  }
+
+  /* ---- Choice groups (auto-advance on pure-choice steps) ---- */
+  document.querySelectorAll('.options').forEach(function(group){
+    var field = group.getAttribute('data-field');
+    group.addEventListener('click', function(e){
+      var b = e.target.closest('.opt'); if(!b) return;
+      group.querySelectorAll('.opt').forEach(function(o){ o.classList.remove('sel'); });
+      b.classList.add('sel');
+      data[field] = b.getAttribute('data-value');
+      if (b.getAttribute('data-price')) data.basePrice = parseInt(b.getAttribute('data-price'),10);
+      var stepEl = b.closest('.step');
+      if (stepEl.getAttribute('data-step') !== '4') { // pas l'étape propriétaire+CP
+        setTimeout(function(){ if (validateStep(cur)) show(cur+1); }, 180);
+      }
+    });
+  });
+
+  /* ---- Booking pickers ---- */
+  document.getElementById('days').addEventListener('click', function(e){
+    var b=e.target.closest('.day'); if(!b) return;
+    this.querySelectorAll('.day').forEach(function(d){ d.classList.remove('sel'); });
+    b.classList.add('sel'); data.rdvDate=b.getAttribute('data-value'); data.rdvDateLabel=b.getAttribute('data-label');
+    document.getElementById('err-day').style.display='none';
+  });
+  document.getElementById('times').addEventListener('click', function(e){
+    var b=e.target.closest('.tslot'); if(!b) return;
+    this.querySelectorAll('.tslot').forEach(function(t){ t.classList.remove('sel'); });
+    var TL={matin:'Matin (9 h – 12 h)',midi:'Midi (12 h – 14 h)',aprem:'Après-midi (14 h – 18 h)'};
+    b.classList.add('sel'); data.rdvTime=b.getAttribute('data-value'); data.rdvTimeLabel=TL[data.rdvTime]||b.getAttribute('data-value');
+    document.getElementById('err-time').style.display='none';
+  });
+
+  /* ---- Validation ---- */
+  function markErr(id, on){ var el=document.getElementById(id); if(el&&el.classList) el.classList.toggle('err', on);
+    var e=document.getElementById('err-'+id); if(e) e.style.display = on ? 'block':'none'; }
+  function val(id){ return (document.getElementById(id).value||'').trim(); }
+  function shake(el){ if(!el) return; el.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}], {duration:220}); }
+
+  function validateStep(i){
+    var el = steps[i]; var s = el.getAttribute('data-step');
+    if (['0','1','2','3'].indexOf(s)>=0) {
+      var field = el.querySelector('.options').getAttribute('data-field');
+      if(!data[field]){ shake(el); return false; } return true;
+    }
+    if (s==='4'){
+      var ok=true;
+      if(!data.proprietaire){ shake(el.querySelector('.options')); ok=false; }
+      var cp=val('cp'); data.cp=cp;
+      if(!/^\d{5}$/.test(cp)){ markErr('cp',true); ok=false; } else markErr('cp',false);
+      return ok;
+    }
+    if (s==='5'){
+      var ok2=true, nom=val('nom'), tel=val('tel'), email=val('email');
+      if(nom.length<2){ markErr('nom',true); ok2=false; } else markErr('nom',false);
+      if(!/^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/.test(tel)){ markErr('tel',true); ok2=false; } else markErr('tel',false);
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ markErr('email',true); ok2=false; } else markErr('email',false);
+      data.nom=nom; data.tel=tel; data.email=email; return ok2;
+    }
+    if (s==='6'){
+      var ok3=true;
+      if(!data.rdvDate){ document.getElementById('err-day').style.display='block'; ok3=false; }
+      if(!data.rdvTime){ document.getElementById('err-time').style.display='block'; ok3=false; }
+      return ok3;
+    }
+    return true;
+  }
+
+  /* ---- Estimation ---- */
+  function computeEstimate(){
+    var base = data.basePrice || 17000;
+    var adj = { 'lt15':-2000, '15-20':0, '20-30':4000, '30plus':9000 }[data.budget] || 0;
+    var center = base + adj;
+    data.estimLow = Math.round((center*0.92)/500)*500;
+    data.estimHigh= Math.round((center*1.12)/500)*500;
+    data.estimCenter = center;
+  }
+  function fmt(n){ return n.toLocaleString('fr-FR'); }
+
+  function renderConfirmation(){
+    computeEstimate();
+    document.getElementById('rdvWhen').textContent = (data.rdvDateLabel||'') + ' · ' + (data.rdvTimeLabel||'');
+    document.getElementById('estimPrice').innerHTML = fmt(data.estimCenter) + ' <small>€ HT</small>';
+    document.getElementById('estimRange').textContent = 'Fourchette indicative : ' + fmt(data.estimLow) + ' € – ' + fmt(data.estimHigh) + ' € HT (hors options & terrassement spécifique).';
+  }
+
+  /* ---- Submit ---- */
+  function submitLead(){
+    var payload = Object.assign({
+      funnel: window.LEAD_CONFIG.funnel, page: location.href, submitted_at: new Date().toISOString()
+    }, data);
+    computeEstimate();
+    track('Schedule', { content_name:'RDV piscine', value: data.estimCenter||17000, currency:'EUR' });
+    track('Lead', { content_name:'Quiz estimation piscine', value: data.estimCenter||17000, currency:'EUR' });
+
+    var cfg = window.LEAD_CONFIG;
+    var done = function(){ if (cfg.redirectOnSuccess){ location.href=cfg.redirectOnSuccess; return; } renderConfirmation(); show(7); };
+    if (!cfg.endpoint){ console.log('[LEAD_CONFIG.endpoint vide — mode démo] Lead capturé :', payload); done(); return; }
+    nextBtn.disabled=true; nextBtn.textContent='Envoi…';
+    fetch(cfg.endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) })
+      .then(function(){ done(); })
+      .catch(function(err){ console.error('Envoi lead échoué', err); done(); });
+  }
+
+  nextBtn.addEventListener('click', function(){
+    if(!validateStep(cur)) return;
+    if (cur === (TOTAL-1)) submitLead(); else show(cur+1);
+  });
+  backBtn.addEventListener('click', function(){ if(cur>0) show(cur-1); });
+  document.getElementById('quiz').addEventListener('submit', function(e){ e.preventDefault(); });
+  document.getElementById('quiz').addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); nextBtn.click(); } });
+
+  track('start', {});
+  show(0);
+})();
+</script>
+
+<!-- ============================================================
+     META PIXEL — décommentez et remplacez PIXEL_ID à l'intégration.
+     Events déjà câblés : PageView, Lead, Schedule (prise de RDV).
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','PIXEL_ID'); fbq('track','PageView');
+</script>
+     ============================================================ -->
+</body>
+</html>
