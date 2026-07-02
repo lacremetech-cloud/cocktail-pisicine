@@ -1,0 +1,10 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/quiz", "destination": "/funnels/funnel-a-quiz.html" },
+    { "source": "/rdv", "destination": "/funnels/funnel-a-quiz.html" },
+    { "source": "/whatsapp", "destination": "/funnels/funnel-b-whatsapp.html" },
+    { "source": "/wa", "destination": "/funnels/funnel-b-whatsapp.html" }
+  ]
+}

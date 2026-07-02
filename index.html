@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cocktail Piscine · Funnels d'acquisition — Jacou (34)</title>
+<meta name="robots" content="noindex" />
+<meta name="description" content="Aperçu des funnels d'acquisition Cocktail Piscine (Occi Piscines 34) : Funnel A quiz → RDV, Funnel B conversationnel WhatsApp." />
+<style>
+  :root{ --bleu-profond:#0b4f6c; --aqua:#12a6c9; --aqua-clair:#e6f6fb; --wa:#25D366; --gris:#5f7078; --texte:#14242c; }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--texte); line-height:1.5;
+    background:linear-gradient(160deg,#eaf7fb 0%,#f7f4ee 100%); min-height:100vh; -webkit-font-smoothing:antialiased; }
+  .wrap{ max-width:760px; margin:0 auto; padding:44px 20px 60px; }
+  .brand{ display:flex; align-items:center; gap:10px; font-weight:800; color:var(--bleu-profond); font-size:19px; letter-spacing:-.3px; margin-bottom:28px; }
+  .brand svg{ width:28px; height:28px; }
+  h1{ font-size:clamp(24px,5vw,32px); color:var(--bleu-profond); letter-spacing:-.5px; line-height:1.2; }
+  .lead{ color:var(--gris); font-size:16px; margin:10px 0 30px; max-width:56ch; }
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media (max-width:620px){ .grid{ grid-template-columns:1fr; } }
+  .card{ background:#fff; border-radius:18px; box-shadow:0 10px 40px rgba(11,79,108,.12); padding:24px 22px; display:flex; flex-direction:column; }
+  .tag{ display:inline-block; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; padding:5px 11px; border-radius:999px; align-self:flex-start; margin-bottom:14px; }
+  .tag.a{ background:var(--aqua-clair); color:var(--bleu-profond); }
+  .tag.b{ background:#dcf8e8; color:#0b6b4f; }
+  .card h2{ font-size:20px; color:var(--bleu-profond); }
+  .card p{ color:var(--gris); font-size:14.5px; margin:8px 0 18px; flex:1; }
+  .card ul{ list-style:none; margin:0 0 18px; padding:0; }
+  .card li{ font-size:13.5px; color:var(--texte); padding-left:22px; position:relative; margin-bottom:6px; }
+  .card li::before{ content:"✓"; position:absolute; left:0; color:var(--aqua); font-weight:800; }
+  .btn{ display:block; text-align:center; text-decoration:none; font-weight:700; font-size:16px; padding:14px; border-radius:12px; color:#fff; transition:filter .15s, transform .05s; }
+  .btn:active{ transform:scale(.99); }
+  .btn.a{ background:var(--bleu-profond); } .btn.b{ background:var(--wa); }
+  .btn:hover{ filter:brightness(1.07); }
+  .note{ margin-top:34px; font-size:13px; color:var(--gris); background:#fff; border:1px solid #e3ebef; border-radius:12px; padding:16px 18px; }
+  .note b{ color:var(--bleu-profond); }
+  .note code{ background:#eef4f6; padding:2px 6px; border-radius:6px; font-size:12.5px; }
+  footer{ text-align:center; font-size:12px; color:#93a5ad; padding-top:28px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13Z" fill="#12a6c9"/><path d="M9 15a3 3 0 0 0 3 3" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+    Cocktail Piscine
+  </div>
+
+  <h1>Funnels d'acquisition — aperçu</h1>
+  <p class="lead">Occi Piscines / Cocktail Piscine 34 — Jacou. Deux funnels en A/B test, prêts à recevoir le trafic ads. Cliquez pour tester chaque parcours.</p>
+
+  <div class="grid">
+    <div class="card">
+      <span class="tag a">Funnel A</span>
+      <h2>Quiz → Prise de RDV</h2>
+      <p>Qualifie le prospect (type, terrain, budget, propriétaire) puis lui fait réserver un créneau de RDV. Estimation chiffrée + catalogue en bonus.</p>
+      <ul>
+        <li>Qualification + booking fusionnés</li>
+        <li>Estimation indicative en direct</li>
+        <li>Idéal pour un lead très chaud</li>
+      </ul>
+      <a class="btn a" href="/quiz">Tester le Funnel A →</a>
+    </div>
+
+    <div class="card">
+      <span class="tag b">Funnel B</span>
+      <h2>Conversationnel WhatsApp</h2>
+      <p>Mini-chat qui pré-qualifie en 3 taps, puis bascule sur WhatsApp avec un message pré-rempli. CPL bas, setting intégré.</p>
+      <ul>
+        <li>Bridge « Click to WhatsApp » Meta</li>
+        <li>Message pré-qualifié automatique</li>
+        <li>Idéal pour un volume au coût bas</li>
+      </ul>
+      <a class="btn b" href="/whatsapp">Tester le Funnel B →</a>
+    </div>
+  </div>
+
+  <div class="note">
+    ⚙️ <b>Avant lancement</b> — configurer dans chaque funnel : le <b>numéro WhatsApp</b> (<code>WA_CONFIG.phone</code>),
+    l'<b>endpoint CRM</b> (<code>LEAD_CONFIG.endpoint</code>) et le <b>Meta Pixel</b>. Détails dans <code>funnels/README.md</code>.
+  </div>
+
+  <footer>Cocktail Piscine · Occi Piscines — Jacou (34) · Page interne (non indexée)</footer>
+</div>
+</body>
+</html>
